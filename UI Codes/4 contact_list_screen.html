@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stitch Design</title>
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Plus+Jakarta+Sans:wght@400;500;700;800" onload="this.rel='stylesheet'" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col justify-between overflow-x-hidden">
+<div class="flex-grow">
+<header class="sticky top-0 z-10 flex items-center justify-between bg-background-light/80 px-4 py-3 backdrop-blur-sm dark:bg-background-dark/80">
+<div class="w-10"></div>
+<h1 class="flex-1 text-center text-lg font-bold text-slate-900 dark:text-white">Contacts</h1>
+<button class="flex h-10 w-10 items-center justify-center rounded-full text-slate-900 dark:text-white">
+<svg fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"></path>
+</svg>
+</button>
+</header>
+<main class="px-4">
+<div class="relative py-4">
+<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+<svg class="h-5 w-5 text-slate-400 dark:text-slate-500" fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path>
+</svg>
+</div>
+<input class="w-full rounded-lg border-transparent bg-slate-200 py-3 pl-11 pr-4 text-slate-900 placeholder:text-slate-500 focus:border-primary focus:ring-primary dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-400" placeholder="Search" type="search"/>
+</div>
+<h2 class="py-2 text-base font-bold text-slate-900 dark:text-white">My Contacts</h2>
+<div class="space-y-1">
+<div class="flex cursor-pointer items-center gap-4 rounded-lg p-2 hover:bg-primary/10 dark:hover:bg-primary/20">
+<div class="relative h-14 w-14 flex-shrink-0">
+<div class="h-14 w-14 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC1ZID5JBiDspNb2MQW269hiUsEDP7MP9LOTxToIsWMY43dGVVGVzQpzrDEtL7fbiVsKq1G6__YYDTWIzZPOEls0yRF7_-7n-SX-L5dNlEAK-RrSWajMDnUTK2hZ8uyTPjvu9QPyU9P6D_oTnyoFCItegVQKKG3qisYozFF9YSYMifGxiQfduDHjKtYXRnP36jO_KZTCsc3SKgmZs3wohuFOiwoQ2_qYXksBhcp-0HbASj9LzwmbvVgVRDoXmFWhVOaktY0bxhUFQ");'></div>
+<div class="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-background-light bg-green-500 dark:border-background-dark"></div>
+</div>
+<div class="flex-grow">
+<p class="font-semibold text-slate-900 dark:text-white">Ethan Carter</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Online</p>
+</div>
+</div>
+<div class="flex cursor-pointer items-center gap-4 rounded-lg p-2 hover:bg-primary/10 dark:hover:bg-primary/20">
+<div class="relative h-14 w-14 flex-shrink-0">
+<div class="h-14 w-14 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBbbQrXD7JkKA7_XcBVSZrIdjGEPn-YUkQ4Hoed1unnGDu1HsYsqAz9fU48wRxQqbCbZn96DnTxhczAgVjmQlDgC3on5_5TWHAeJfgKj_vI3trjQOVCt5tOeJzFhftYcm3uwoVUbJ38fF4csxqprV81B82LyuQfkP17m1gZC7hC4W5mfJEIIwjw2gnlQR3EuNhXW3eJx4E73sgBLOO2VotKiP7v3IXDpxe705ygtWZTuZiWpGvlZPH1DGxLEhFfq2taRNqHrxyNrA");'></div>
+<div class="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-background-light bg-green-500 dark:border-background-dark"></div>
+</div>
+<div>
+<p class="font-semibold text-slate-900 dark:text-white">Sophia Bennett</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Online</p>
+</div>
+</div>
+<div class="flex cursor-pointer items-center gap-4 rounded-lg p-2 hover:bg-primary/10 dark:hover:bg-primary/20">
+<div class="h-14 w-14 flex-shrink-0 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBPvgSdoDgUeQ9AtGvdNjyz_ZK--eC7Ve84iHjGk7J3mxdDvjg-49UMfKYtnzLiq6lvy1H8cAbIx-_DowFa8lX9mLWp4KFBNy2KyJIGkhBtf5rond_DAhqO8BO_X9Da8oeFPxocG8JlSL2sPRvlw30uwRkC9jb0vqhulv9_Sjqru_upZCZ4K3fc69A6aDl5X7uiUAj-ZC50YZ6Uctqcdfe0wkmjT1eypqp4Rq_MiSBxr0acZ9thl7bsjyODJrYruL_Nbfj7Ll-FHg");'></div>
+<div>
+<p class="font-semibold text-slate-900 dark:text-white">Liam Harper</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Last seen 2 hours ago</p>
+</div>
+</div>
+<div class="flex cursor-pointer items-center gap-4 rounded-lg p-2 hover:bg-primary/10 dark:hover:bg-primary/20">
+<div class="h-14 w-14 flex-shrink-0 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAvk-a4HIwMy78MJkzRt0tWUTHIqI7h3gWxq3_fWLN5RxibstNTG5cgF0SwvMeHcS4asYDMovcKF7jTx4yvOAGlRbVaj9MUUSgE97VRmfwQ9wIpiL-Rxg8ddGhIFWtAxpC5JSHJCPhBtiCONBR_sIzwNxy9xlqTw-hBXIWc1CCk-rbieWxmnnwDMW5hZZnnBMxIRkUqCn82lz4Vx0Sb7K4g33sm4_LJuD9LuBrf806RVES_D49QgG3qt8xR5tICFMP68Vfm665PQA");'></div>
+<div>
+<p class="font-semibold text-slate-900 dark:text-white">Olivia Foster</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Last seen yesterday</p>
+</div>
+</div>
+<div class="flex cursor-pointer items-center gap-4 rounded-lg p-2 hover:bg-primary/10 dark:hover:bg-primary/20">
+<div class="relative h-14 w-14 flex-shrink-0">
+<div class="h-14 w-14 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuApgq5R7UyCD8NNInhesi0bCAKS8bv73SC8RC0E0ZhANDDufOA5zKc1fwMN8ecpv-ZDpWWOgzHEqxmnWXIxx1QjPGB3VjbNB_HXrI5zFhZuC7AIluLVnb1rRy4ZNrRpmJpQZlH-pMIS6KLe1HeLi5bpSFk6bm-MCTobxGfTH9f_idRbJCYKY7fLmI98WEuczIiVCOfo_tMNgHWWW0nFwuMUQ0ofD7_G3y9hZxGs2xJ9PugYi37aQK3KeQy8QL0e6DnN52J4-VbO8Q");'></div>
+<div class="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-background-light bg-green-500 dark:border-background-dark"></div>
+</div>
+<div>
+<p class="font-semibold text-slate-900 dark:text-white">Noah Parker</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Online</p>
+</div>
+</div>
+<div class="flex cursor-pointer items-center gap-4 rounded-lg p-2 hover:bg-primary/10 dark:hover:bg-primary/20">
+<div class="h-14 w-14 flex-shrink-0 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCmIsQZbrE2RNiuH1ISwLSKgiqt7zQKYqRa0CaG6vk5hO9Xq-avQ988sbJ6uDvdyf5mDGZRdY0-qdlWcQ9CcIxdEYfP-MhNNHNgSJ6JkfDomqoZgQIJIQZr3iS1sxhNfPdW3-1ocdXfSk6TJU3IThMOeq5i-Dq2DDhaCoy5JtiC5U7jzj-RlbToR2pDMg7Q3Q85k8k4pOR5sYoAv59RU9IGN04jkUKKrhyZv4OSLaNc8niUbEuognkDfD3GspeytJegSDp0qxy4wA");'></div>
+<div>
+<p class="font-semibold text-slate-900 dark:text-white">Ava Mitchell</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Last seen 5 minutes ago</p>
+</div>
+</div>
+<div class="flex cursor-pointer items-center gap-4 rounded-lg p-2 hover:bg-primary/10 dark:hover:bg-primary/20">
+<div class="h-14 w-14 flex-shrink-0 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB6iCVwBkHEyew9M-FElDARCPNc6Fr0_0GMFIC4ThslCsaRoPkWGZUWxtM2y_KzyCkn7kz8G9TpfxO6IibXAodDhwBRGyvYnwghkwhXmzm71ubo_5Kf1whVCWdQK6OypiIpDwE_F7S5h7gvzbhW4hgM5I6K_B4Y_eyEozroh1FE6RKMYqYTH4Eh9gkBFcfjiCpkPsj9JlFFLtyxRbyQ0c11OUMcx_E-gcjsSqzi7QLJsij2odbeo3eQ8aUtI6S2_BSUA3lUX2D5Nw");'></div>
+<div>
+<p class="font-semibold text-slate-900 dark:text-white">Jackson Reed</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Last seen 15 minutes ago</p>
+</div>
+</div>
+<div class="flex cursor-pointer items-center gap-4 rounded-lg p-2 hover:bg-primary/10 dark:hover:bg-primary/20">
+<div class="relative h-14 w-14 flex-shrink-0">
+<div class="h-14 w-14 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBr77P-NdvSm5VVEpLSbIhhpfa_d8XGIIOWZImLmxsmIJgv7T56w1eRZ_3C7_34I2ePvPAOsB1fHNW9jMDBAIcmeGAAqz9Bqo7VANL8SIfRoUbCvi0MgpTfyk7sXdSMu1ZReCVUTxlhIQZ0IDa7GpiTxW6vah5XQkLswFk-lmMUNP5oCmxvgHsXc2e9f_ReA0Nmx0_NSkCjaeklj_mAUTJUAxRs62XSZgk8dzn1O1IEjFbRZiEODNWcb9vBnRIwTesTjd8gBh2t0w");'></div>
+<div class="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-background-light bg-green-500 dark:border-background-dark"></div>
+</div>
+<div>
+<p class="font-semibold text-slate-900 dark:text-white">Isabella Coleman</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Online</p>
+</div>
+</div>
+</div>
+</main>
+</div>
+<footer class="sticky bottom-0 border-t border-slate-200 bg-background-light/80 pb-4 pt-2 backdrop-blur-sm dark:border-slate-800 dark:bg-background-dark/80">
+<nav class="flex justify-around px-4">
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400" href="./2 chat_list_screen.html">
+<svg fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M216,80H184V48a16,16,0,0,0-16-16H40A16,16,0,0,0,24,48V176a8,8,0,0,0,13,6.22L72,154V184a16,16,0,0,0,16,16h93.59L219,230.22a8,8,0,0,0,5,1.78,8,8,0,0,0,8-8V96A16,16,0,0,0,216,80ZM66.55,137.78,40,159.25V48H168v88H71.58A8,8,0,0,0,66.55,137.78ZM216,207.25l-26.55-21.47a8,8,0,0,0-5-1.78H88V152h80a16,16,0,0,0,16-16V96h32Z"></path></svg>
+<span class="text-xs font-medium">Chats</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<svg fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M222.37,158.46l-47.11-21.11-.13-.06a16,16,0,0,0-15.17,1.4,8.12,8.12,0,0,0-.75.56L134.87,160c-15.42-7.49-31.34-23.29-38.83-38.51l20.78-24.71c.2-.25.39-.5.57-.77a16,16,0,0,0,1.32-15.06l0-.12L97.54,33.64a16,16,0,0,0-16.62-9.52A56.26,56.26,0,0,0,32,80c0,79.4,64.6,144,144,144a56.26,56.26,0,0,0,55.88-48.92A16,16,0,0,0,222.37,158.46ZM176,208A128.14,128.14,0,0,1,48,80,40.2,40.2,0,0,1,82.87,40a.61.61,0,0,0,0,.12l21,47L83.2,111.86a6.13,6.13,0,0,0-.57.77,16,16,0,0,0-1,15.7c9.06,18.53,27.73,37.06,46.46,46.11a16,16,0,0,0,15.75-1.14,8.44,8.44,0,0,0,.74-.56L168.89,152l47,21.05h0s.08,0,.11,0A40.21,40.21,0,0,1,176,208Z"></path></svg>
+<span class="text-xs font-medium">Calls</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="./4 contact_list_screen.html">
+<svg fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M164.47,195.63a8,8,0,0,1-6.7,12.37H10.23a8,8,0,0,1-6.7-12.37,95.83,95.83,0,0,1,47.22-37.71,60,60,0,1,1,66.5,0A95.83,95.83,0,0,1,164.47,195.63Zm87.91-.15a95.87,95.87,0,0,0-47.13-37.56A60,60,0,0,0,144.7,54.59a4,4,0,0,0-1.33,6A75.83,75.83,0,0,1,147,150.53a4,4,0,0,0,1.07,5.53,112.32,112.32,0,0,1,29.85,30.83,23.92,23.92,0,0,1,3.65,16.47,4,4,0,0,0,3.95,4.64h60.3a8,8,0,0,0,7.73-5.93A8.22,8.22,0,0,0,252.38,195.48Z"></path></svg>
+<span class="text-xs font-medium">Contacts</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400" href="./5 user_profile_screen.html">
+<svg fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm88-29.84q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.21,107.21,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.71,107.71,0,0,0-26.25-10.87,8,8,0,0,0-7.06,1.49L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.21,107.21,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06Zm-16.1-6.5a73.93,73.93,0,0,1,0,8.68,8,8,0,0,0,1.74,5.48l14.19,17.73a91.57,91.57,0,0,1-6.23,15L187,173.11a8,8,0,0,0-5.1,2.64,74.11,74.11,0,0,1-6.14,6.14,8,8,0,0,0-2.64,5.1l-2.51,22.58a91.32,91.32,0,0,1-15,6.23l-17.74-14.19a8,8,0,0,0-5-1.75h-.48a73.93,73.93,0,0,1-8.68,0,8,8,0,0,0-5.48,1.74L100.45,215.8a91.57,91.57,0,0,1-15-6.23L82.89,187a8,8,0,0,0-2.64-5.1,74.11,74.11,0,0,1-6.14-6.14,8,8,0,0,0-5.1-2.64L46.43,170.6a91.32,91.32,0,0,1-6.23-15l14.19-17.74a8,8,0,0,0,1.74-5.48,73.93,73.93,0,0,1,0-8.68,8,8,0,0,0-1.74-5.48L40.2,100.45a91.57,91.57,0,0,1,6.23-15L69,82.89a8,8,0,0,0,5.1-2.64,74.11,74.11,0,0,1,6.14-6.14A8,8,0,0,0,82.89,69L85.4,46.43a91.32,91.32,0,0,1,15-6.23l17.74,14.19a8,8,0,0,0,5.48,1.74,73.93,73.93,0,0,1,8.68,0,8,8,0,0,0,5.48-1.74L155.55,40.2a91.57,91.57,0,0,1,15,6.23L173.11,69a8,8,0,0,0,2.64,5.1,74.11,74.11,0,0,1,6.14,6.14,8,8,0,0,0,5.1,2.64l22.58,2.51a91.32,91.32,0,0,1,6.23,15l-14.19,17.74A8,8,0,0,0,199.87,123.66Z"></path></svg>
+<span class="text-xs font-medium">Settings</span>
+</a>
+</nav>
+</footer>
+</div>
+
+</body></html>

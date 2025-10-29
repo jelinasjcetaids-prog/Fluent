@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Account Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#137fec",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      };
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-200">
+<div class="flex h-screen flex-col">
+<header class="flex items-center border-b border-slate-200/80 dark:border-slate-800/80 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm p-4 sticky top-0 z-10">
+<a href="./5 user_profile_screen.html" class="flex items-center justify-center p-2 -ml-2">
+  <span class="material-symbols-outlined text-slate-600 dark:text-slate-400">arrow_back_ios_new</span>
+</a>
+<h1 class="flex-1 text-center text-lg font-bold text-slate-900 dark:text-white pr-8">Account</h1>
+</header>
+
+<main class="flex-1 overflow-y-auto">
+<div class="divide-y divide-slate-200 dark:divide-slate-800">
+<a class="flex items-center gap-4 p-4 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors duration-200" href="#">
+<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">lock</span>
+</div>
+<div class="flex flex-col">
+<p class="font-semibold text-slate-900 dark:text-white">Privacy</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Manage who can see your personal info</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 dark:text-slate-500 ml-auto">chevron_right</span>
+</a>
+<a class="flex items-center gap-4 p-4 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors duration-200" href="#">
+<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">shield</span>
+</div>
+<div class="flex flex-col">
+<p class="font-semibold text-slate-900 dark:text-white">Security</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Enable two-step verification</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 dark:text-slate-500 ml-auto">chevron_right</span>
+</a>
+<a class="flex items-center gap-4 p-4 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors duration-200" href="#">
+<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">phone_iphone</span>
+</div>
+<div class="flex flex-col">
+<p class="font-semibold text-slate-900 dark:text-white">Change number</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Change your phone number</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 dark:text-slate-500 ml-auto">chevron_right</span>
+</a>
+<a class="flex items-center gap-4 p-4 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors duration-200" href="#">
+<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">delete</span>
+</div>
+<div class="flex flex-col">
+<p class="font-semibold text-red-500 dark:text-red-500">Delete my account</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Permanently delete your account</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 dark:text-slate-500 ml-auto">chevron_right</span>
+</a>
+</div>
+</main>
+<nav class="border-t border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark/50 backdrop-blur-sm sticky bottom-0">
+<div class="flex justify-around p-2">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-primary/10 dark:hover:bg-primary/20 hover:text-primary dark:hover:text-primary transition-colors" href="./2 chat_list_screen.html">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="text-xs font-medium">Chats</span>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-primary/10 dark:hover:bg-primary/20 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">call</span>
+<span class="text-xs font-medium">Calls</span>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-primary/10 dark:hover:bg-primary/20 hover:text-primary dark:hover:text-primary transition-colors" href="./4 contact_list_screen.html">
+<span class="material-symbols-outlined">group</span>
+<span class="text-xs font-medium">Contacts</span>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 p-2 rounded-lg bg-primary/10 text-primary" href="./5 user_profile_screen.html">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="text-xs font-medium">Settings</span>
+</a>
+</div>
+</nav>
+</div>
+
+</body></html>

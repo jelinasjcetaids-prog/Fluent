@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stitch Design</title>
+<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#137fec",
+          "background-light": "#f6f7f8",
+          "background-dark": "#101922",
+        },
+        fontFamily: {
+          "display": ["Plus Jakarta Sans"]
+        },
+        borderRadius: {
+          "DEFAULT": "0.5rem",
+          "lg": "1rem",
+          "xl": "1.5rem",
+          "full": "9999px"
+        },
+      },
+    },
+  }
+</script>
+<style>
+  body {
+    min-height: max(884px, 100dvh);
+  }
+</style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark">
+<div class="relative flex h-auto min-h-screen w-full flex-col justify-between overflow-x-hidden">
+<div>
+<header class="sticky top-0 z-10 flex items-center justify-between border-b border-background-light/80 bg-background-light/80 p-4 pb-2 backdrop-blur-sm dark:border-background-dark/80 dark:bg-background-dark/80">
+<h1 class="flex-1 text-center text-lg font-bold text-slate-900 dark:text-white">Chats</h1>
+<button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-transparent text-slate-600 dark:text-slate-300">
+<svg fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.68,147.31,64l24-24L216,84.68Z"></path>
+</svg>
+</button>
+</header>
+
+<div class="p-4">
+<div class="relative">
+<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-500 dark:text-slate-400">
+<svg fill="currentColor" height="20" viewBox="0 0 256 256" width="20" xmlns="http://www.w3.org/2000/svg">
+<path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path>
+</svg>
+</div>
+<input class="w-full rounded-lg border-0 bg-white py-3 pl-12 pr-4 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-background-dark/50 dark:text-white dark:placeholder-slate-500 dark:focus:ring-primary/80" placeholder="Search" type="text"/>
+</div>
+</div>
+
+<!-- UPDATED GEMINI SECTION -->
+<div class="p-4">
+<a class="relative block overflow-hidden rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 p-4 shadow-lg"
+   href="./3 gemini_ai_assistant_chat_screen.html"
+   style="cursor: pointer;">
+  <div class="absolute inset-0 bg-black/10 backdrop-blur-sm"></div>
+  <div class="relative flex items-center gap-4">
+    <div class="relative h-14 w-14 flex-shrink-0">
+      <div class="flex h-14 w-14 items-center justify-center rounded-full bg-white/20 text-white">
+        <svg class="lucide lucide-sparkles" fill="none" height="32" stroke="currentColor"
+             stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+             width="32" xmlns="http://www.w3.org/2000/svg">
+          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275
+                   1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2
+                   2 0 0 1-1.275-1.275L12 3Z"></path>
+          <path d="M5 3v4"></path>
+          <path d="M19 17v4"></path>
+          <path d="M3 5h4"></path>
+          <path d="M17 19h4"></path>
+        </svg>
+      </div>
+    </div>
+    <div class="flex-grow">
+      <p class="text-lg font-bold text-white">Gemini AI Assistant</p>
+      <p class="text-sm text-white/80 line-clamp-1">Your personal AI companion. Ask me anything!</p>
+    </div>
+    <div class="flex-shrink-0">
+      <svg class="text-white/80" fill="none" height="24" stroke="currentColor"
+           stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+           viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </div>
+  </div>
+</a>
+</div>
+<div class="w-full overflow-x-auto px-4 py-3">
+<div class="flex min-h-min flex-row items-start justify-start gap-5">
+<div class="flex w-16 flex-shrink-0 flex-col items-center justify-center gap-2">
+<div class="w-16 h-16 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCUu9j5wh074oo24hUCFtoL48p4rjJ_PKE2hBXT63a_MiEHlZNQ2uKG2GpwsSUKVALx5J05s17Sl-Vi7bI0W8X_s3VwzXs4uhFi8zwci07Ky9FCMzFpqIktY_q9rw8B6Rr0g6a9x5rnvOEWsZXIrF3xPhuUQ3SuuNOzFvi7ro4KTAS4ml0PQhgTWOUSJjqF-0JLRujOBRXQ3a5dSAnFaR6A6Y4Y8cCcmb0RbXk6AtTNM4fe7499j4jRN39_4iFTrjgBuuCP5yI0mw");'></div>
+<p class="w-full truncate text-center text-xs text-slate-800 dark:text-slate-200">Elara Bennett</p>
+</div>
+<div class="flex w-16 flex-shrink-0 flex-col items-center justify-center gap-2">
+<div class="w-16 h-16 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCPVUCY5WrkJSjpP_841gy5EXoPoxTUWvDAxGfjlY5K1m1DuRR2LxPfGA91YqpjqX_koi9-SQIvbTcSJhWLChjYGobvbn1F7FEJjl-xMStzGufyPf5SUz9eFZbiwXjv8ghNHZ40sbzuQ639fYCsrjjUOq2qYGLtpQMq3_y18aDzCZP-_Qghvy5FaZS0GCnnUIaECKOwnf415OAZu0qY5k8je3YZhIrc1btijkkj1B3UM6NSQ_NZF-JAv-K2exGmiqVC76rSfv9jzw");'></div>
+<p class="w-full truncate text-center text-xs text-slate-800 dark:text-slate-200">Stellan Hartley</p>
+</div>
+<div class="flex w-16 flex-shrink-0 flex-col items-center justify-center gap-2">
+<div class="w-16 h-16 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuARg6lDGgy25kGHzG9JvTr4pJA6R6OqNhOqjdnJz9UX75UMvKRunLHRqvWTO2TZm5dw8bKkSIFdD25k1JPMuZNQ6l7J6O5HidJ9sRW0whGiHe1rZqRh_ZxDCMdYLiNvCBLJpzwaxlufWmlUUeFKt2T_5vGALPi5MqySgk5aP0sz9HLWdg79ArKDi45-2buAJE7SNSPTWePHbYo5VUMANHVswsqu9ePZNEbncE9qTb7fepWUDK13KzWiSGciUpK8HdNM4SgdaPMWzw");'></div>
+<p class="w-full truncate text-center text-xs text-slate-800 dark:text-slate-200">Callum Stafford</p>
+</div>
+<div class="flex w-16 flex-shrink-0 flex-col items-center justify-center gap-2">
+<div class="w-16 h-16 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCj9uxd91rZnxdguJIyKeRbyxQLQEAmvHamZTo9R4qUKY2AzKrcJ8IefEh-rYvmAo_2wYZr8ooVqeUrvINv3i4QBBn0y4DIYKKOFqq0q6_Wu5dRUVJCAZ9CyE11l3GWkygygxNEU7QR6HiS054tF7X7onUwTscCSmsDsllRu3iPKsB_QQpGcWLgSZNdq5H0erQn9FsCD6A3tqFvYQa4Xph3c5OPkonTYtXn40aUjcuWv1mlBBCsywXRnZVEMIdhMoKef4L7I5VX8A");'></div>
+<p class="w-full truncate text-center text-xs text-slate-800 dark:text-slate-200">Freya Donovan</p>
+</div>
+<div class="flex w-16 flex-shrink-0 flex-col items-center justify-center gap-2">
+<div class="w-16 h-16 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDotZ6uwAgLtxfL0RuIeZpcVL-5PZam0J_xaRx8aa6AizN5y8mvcnHmscUHcvx8I2j7a0Pem-IkdHncLaJJsehuWzcDIz9Fj9Wu3kBgG57617gfpKCNzzdchviXNCtdJCwjbrHoN3bvW-q0wtTAgZWOPcnfaKJ5l3MfCErf9AR48JIZSGSb3J8Vfmdqs3xQExgJigBb1YHUSUkCNcKHQowIAD7l6kc8dtf-b-kWQ6r6NFV_2JYsyAMyPjZS9hvNZMWunnXI1DakWA");'></div>
+<p class="w-full truncate text-center text-xs text-slate-800 dark:text-slate-200">Thalia Rowe</p>
+</div>
+</div>
+</div>
+<h2 class="px-4 pb-2 pt-4 text-base font-bold text-slate-900 dark:text-white">Messages</h2>
+<div class="flex flex-col">
+<a class="flex cursor-pointer items-center gap-4 px-4 py-3 hover:bg-slate-200/50 dark:hover:bg-slate-800/50" href="#">
+<div class="relative h-14 w-14 flex-shrink-0">
+<div class="h-14 w-14 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBClcB2ffEsljY9cPqa9ecFEGm6EIxbegJVchR58S2hO9tQylYoXRQ7Vgr7Z_gEvb9l_kCWd_fR0XFQLuh-mZD5yNSutW3j9t85XoaVCKM8GsmAPpXnzlNvNghZjiyqK1ogqV0Sk9_U_8J9ROFmA_tOLBbELY7qdEubbBl3ExvZjfA29FU21dCkj0hzZQDZrnzs5DXoBQ8DNc4Ja0TfkZzMW1xpvVoEl4-CtMkLbdQPZ8RSrnmVXv9Yhkmgm5kPJMtmfIsWj5GtVA");'></div>
+<div class="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-background-light bg-green-500 dark:border-background-dark"></div>
+</div>
+<div class="flex-grow">
+<div class="flex items-center justify-between">
+<p class="font-semibold text-slate-900 dark:text-white">Arnold</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">2d ago</p>
+</div>
+<div class="flex items-center justify-between">
+<p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-1">You sent a snap</p>
+<div class="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-white text-xs">2</div>
+</div>
+</div>
+</a>
+<a class="flex cursor-pointer items-center gap-4 px-4 py-3 hover:bg-slate-200/50 dark:hover:bg-slate-800/50" href="#">
+<div class="h-14 w-14 flex-shrink-0 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB66aKhjnSNV5lZmutG180FfqZHLp2JEAzycVd7wTYhN6FTA8YSBQVKX4Mugj7sCSAQDwx4OqeXL6XdrkMtSXBTT0qBCH7BWvgo1_t1ZihQv0U5OCQ35SV8lSdQD73OXAZaXn72ueZuUst6D3zhd5HolXLAMsM1scGVaiTfAb5s7bNRcPTaR2FPAszLSgBNsThnf6_SMHytG_wS8Tv4olkeNonlBawCPflqDuFn2eYteG1h7lfFcr-NJwFDmVMMG4aQ3esCJqNR_Q");'></div>
+<div class="flex-grow">
+<div class="flex items-center justify-between">
+<p class="font-semibold text-slate-900 dark:text-white">Camila</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">17m ago</p>
+</div>
+<p class="text-sm text-primary dark:text-primary line-clamp-1">New Snap</p>
+</div>
+</a>
+<a class="flex cursor-pointer items-center gap-4 px-4 py-3 hover:bg-slate-200/50 dark:hover:bg-slate-800/50" href="#">
+<div class="h-14 w-14 flex-shrink-0 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuANhXBC4z9Ca3cHhgJiXlZ_gdTF0i1nK7MgHRmEg2FTEb2QdSe6SSY6dLAg1t90Zu2mdabzWDvXgBF6poWjkEtsazEPMzNh-hhDmqZ_Y2c-eH7e-i7PktkCN4brV6zVQVcvAsNliHm8tXeerc1yXrN_9gZYuZuOZL41GGMcUgZ3IEJEdSBCggmx19GlsDfLQlNqrAcfuui4qtZ7fPvL98Zw2n7YUAJ_-07Hd8tTOz2ysZhljrZPpEtLT3HYZN0ayErXLVziA_1jKw");'></div>
+<div class="flex-grow">
+<div class="flex items-center justify-between">
+<p class="font-semibold text-slate-900 dark:text-white">Jake</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">1h ago</p>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-1">Sent</p>
+</div>
+</a>
+<a class="flex cursor-pointer items-center gap-4 px-4 py-3 hover:bg-slate-200/50 dark:hover:bg-slate-800/50" href="#">
+<div class="h-14 w-14 flex-shrink-0 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDMOk3ZGIPEgew2CYOxmBW71RjFC4_QkWK0QcnJysCZ2Dcmv6SDCj3YXIZuAAE8wEwNv1c_dZBjXlZcwped0X1USfbiqtHR-aMT41EYBDtB3Ng2vIoIii680OMl_2iXHcR55FLkpFSvhmmxqJFtMI8pSrUhvFOtzniWEOoRRtZsJFID0wPBx3ivBDpXAw2UBM6Ovr5MiWm7Glvxx9eCe4wzICwvSC3b2BAkwVLSB_iZf1GINlh42hEXDqbN2LRrJ-Z7Tno3vth9bw");'></div>
+<div class="flex-grow">
+<div class="flex items-center justify-between">
+<p class="font-semibold text-slate-900 dark:text-white">Matt</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">1h ago</p>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-1">Opened</p>
+</div>
+</a>
+<a class="flex cursor-pointer items-center gap-4 px-4 py-3 hover:bg-slate-200/50 dark:hover:bg-slate-800/50" href="#">
+<div class="h-14 w-14 flex-shrink-0 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCohpGPE-O-i1fAYzD77LDRCksKEPb-wBZo7cOFFhrb3PvPnEVs_gZUNgUJ7-kROLAN0ayl6TJYbXsn_DrqDE0f1TkiZgqjiYuZKSbT4ypR2nBa0GXAeg_NMAVODA-tFwqkt6nDPnRoiYt5JiRngmrlPSrCawmh4Yzo16sryv13CwUYjc3CAVg3zhrXmQdwkEYmJRsh7z8vj4oGCJAeZWZoQI888pHy3utjagsqxbcIV8Rw7_j0chSvxb96dUWMD6lVpuMV5i7oHQ");'></div>
+<div class="flex-grow">
+<div class="flex items-center justify-between">
+<p class="font-semibold text-slate-900 dark:text-white">Liliam</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Yesterday</p>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-1">Received</p>
+</div>
+</a>
+<a class="flex cursor-pointer items-center gap-4 px-4 py-3 hover:bg-slate-200/50 dark:hover:bg-slate-800/50" href="#">
+<div class="h-14 w-14 flex-shrink-0 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCcF-vU8eQajpuGimWW8m_YgyxTMDw9xCUrvyWHEFGdj_01hL44geBHwmAWxPmC2Z5z5MYRP5ja87q-RbgIdmYjNAqjD6gPOADIRgUy7cRC-AdOevU_lfwZg2K2lO8C7Pctmizom2crtDpSKlA5Ts2lXy3nyxszNODhuk4PrtLb-AlDiDqUI8Hh3fg65pdKclUWgL62jIZCSdQhkoDvdLDzSG-i5W6B1daSjiE7E06qoIY-xHPke0B0I9N0TkQYvkEkjblJVDOLBg");'></div>
+<div class="flex-grow">
+<div class="flex items-center justify-between">
+<p class="font-semibold text-slate-900 dark:text-white">Alison</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Active now</p>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-1">Typing...</p>
+</div>
+</a>
+</div>
+</div>
+<footer class="sticky bottom-0 border-t border-background-light/80 bg-background-light/80 backdrop-blur-sm dark:border-background-dark/80 dark:bg-background-dark/80">
+<div class="flex justify-around py-2">
+<a class="flex flex-1 flex-col items-center justify-end gap-1 rounded-full text-primary" href="./2 chat_list_screen.html">
+<div class="flex h-8 items-center justify-center">
+<svg fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M144,144a16,16,0,0,1-16,16H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H168a16,16,0,0,1,16,16v88l42.24,31.68A16,16,0,0,1,216,216V88a16,16,0,0,0-16-16H160V56a32,32,0,0,0-32-32H40A32,32,0,0,0,8,56V144a32,32,0,0,0,32,32h88a32,32,0,0,0,31.7-27.59l.3-1.66V144Zm56,53.48L173.76,180H168a16,16,0,0,1-16,16H128V144a32,32,0,0,0-32-32H40a16,16,0,0,1,0-32H168a16,16,0,0,1,16,16v16h16a16,16,0,0,1,16,16v41.48Z"></path>
+</svg>
+</div>
+<p class="text-xs font-medium">Chats</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 dark:text-slate-400" href="#">
+<div class="flex h-8 items-center justify-center">
+<svg fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M222.37,158.46l-47.11-21.11-.13-.06a16,16,0,0,0-15.17,1.4,8.12,8.12,0,0,0-.75.56L134.87,160c-15.42-7.49-31.34-23.29-38.83-38.51l20.78-24.71c.2-.25.39-.5.57-.77a16,16,0,0,0,1.32-15.06l0-.12L97.54,33.64a16,16,0,0,0-16.62-9.52A56.26,56.26,0,0,0,32,80c0,79.4,64.6,144,144,144a56.26,56.26,0,0,0,55.88-48.92A16,16,0,0,0,222.37,158.46ZM176,208A128.14,128.14,0,0,1,48,80,40.2,40.2,0,0,1,82.87,40a.61.61,0,0,0,0,.12l21,47L83.2,111.86a6.13,6.13,0,0,0-.57.77,16,16,0,0,0-1,15.7c9.06,18.53,27.73,37.06,46.46,46.11a16,16,0,0,0,15.75-1.14,8.44,8.44,0,0,0,.74-.56L168.89,152l47,21.05h0s.08,0,.11,0A40.21,40.21,0,0,1,176,208Z"></path>
+</svg>
+</div>
+<p class="text-xs font-medium">Calls</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 dark:text-slate-400" href="./4 contact_list_screen.html">
+<div class="flex h-8 items-center justify-center">
+<svg fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z"></path>
+</svg>
+</div>
+<p class="text-xs font-medium">Contacts</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 dark:text-slate-400" href="./5 user_profile_screen.html">
+<div class="flex h-8 items-center justify-center">
+<svg fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm88-29.84q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.21,107.21,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.71,107.71,0,0,0-26.25-10.87,8,8,0,0,0-7.06,1.49L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.21,107.21,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06Zm-16.1-6.5a73.93,73.93,0,0,1,0,8.68,8,8,0,0,0,1.74,5.48l14.19,17.73a91.57,91.57,0,0,1-6.23,15L187,173.11a8,8,0,0,0-5.1,2.64,74.11,74.11,0,0,1-6.14,6.14,8,8,0,0,0-2.64,5.1l-2.51,22.58a91.32,91.32,0,0,1-15,6.23l-17.74-14.19a8,8,0,0,0-5-1.75h-.48a73.93,73.93,0,0,1-8.68,0,8,8,0,0,0-5.48,1.74L100.45,215.8a91.57,91.57,0,0,1-15-6.23L82.89,187a8,8,0,0,0-2.64-5.1,74.11,74.11,0,0,1-6.14-6.14,8,8,0,0,0-5.1-2.64L46.43,170.6a91.32,91.32,0,0,1-6.23-15l14.19-17.74a8,8,0,0,0,1.74-5.48,73.93,73.93,0,0,1,0-8.68,8,8,0,0,0-1.74-5.48L40.2,100.45a91.57,91.57,0,0,1,6.23-15L69,82.89a8,8,0,0,0,5.1-2.64,74.11,74.11,0,0,1,6.14-6.14A8,8,0,0,0,82.89,69L85.4,46.43a91.32,91.32,0,0,1,15-6.23l17.74,14.19a8,8,0,0,0,5.48,1.74,73.93,73.93,0,0,1,8.68,0,8,8,0,0,0,5.48-1.74L155.55,40.2a91.57,91.57,0,0,1,15,6.23L173.11,69a8,8,0,0,0,2.64,5.1,74.11,74.11,0,0,1,6.14,6.14,8,8,0,0,0,5.1,2.64l22.58,2.51a91.32,91.32,0,0,1,6.23,15l-14.19,17.74A8,8,0,0,0,199.87,123.66Z"></path>
+</svg>
+</div>
+<p class="text-xs font-medium">Settings</p>
+</a>
+</div>
+<div class="h-safe-area-bottom bg-background-light dark:bg-background-dark"></div>
+</footer>
+</div>
+
+</body></html>

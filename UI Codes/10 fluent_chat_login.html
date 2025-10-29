@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login - Fluent</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#38e07b",
+            "background-light": "#f6f8f7",
+            "background-dark": "#122017",
+          },
+          fontFamily: {
+            "display": ["Plus Jakarta Sans", "Noto Sans", "sans-serif"]
+          },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden font-display" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+<div class="flex flex-col items-center justify-center p-4 min-h-screen">
+<div class="w-full max-w-md space-y-6">
+<div class="text-center">
+<h1 class="text-3xl font-bold tracking-tight text-[#1C1C1E] dark:text-white">Log in to your account</h1>
+</div>
+<div class="space-y-4">
+<div class="flex max-w-[480px] flex-wrap items-end gap-4 py-3">
+<label class="flex flex-col min-w-40 flex-1">
+<p class="text-[#1C1C1E] dark:text-gray-300 text-base font-medium leading-normal pb-2">Phone Number</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#1C1C1E] dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 border-none bg-[#F2F2F7] dark:bg-background-dark h-14 placeholder:text-[#648772] p-4 text-base font-normal leading-normal" placeholder="+1 (555) 000-0000" value=""/>
+</label>
+</div>
+<div class="flex max-w-[480px] flex-wrap items-end gap-4 py-3">
+<label class="flex flex-col min-w-40 flex-1">
+<p class="text-[#1C1C1E] dark:text-gray-300 text-base font-medium leading-normal pb-2">Password</p>
+<div class="flex w-full flex-1 items-stretch rounded-lg">
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#1C1C1E] dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 border-none bg-[#F2F2F7] dark:bg-background-dark h-14 placeholder:text-[#648772] p-4 rounded-r-none border-r-0 pr-2 text-base font-normal leading-normal" placeholder="Enter your password" type="password" value=""/>
+<div class="text-[#648772] flex border-none bg-[#F2F2F7] dark:bg-background-dark items-center justify-center pr-4 rounded-r-lg border-l-0">
+<span class="material-symbols-outlined cursor-pointer">visibility_off</span>
+</div>
+</div>
+</label>
+</div>
+</div>
+<a href="./2 chat_list_screen.html" >
+<div class="flex px-4 py-3">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 flex-1 bg-[#007AFF] text-white text-base font-bold leading-normal tracking-[0.015em]">
+<span class="truncate">Login</span>
+</button>
+</div>
+</a>
+<div class="text-center">
+<p class="text-[#007AFF] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center underline cursor-pointer">Forgot Password?</p>
+</div>
+<div class="text-center">
+<p class="text-[#1C1C1E] dark:text-gray-300 text-sm">Don't have an account? <a class="font-medium text-[#007AFF] hover:underline" href="./11 fluent_chat_registration.html">Sign Up</a></p>
+</div>
+</div>
+</div>
+</div>
+</body></html>
