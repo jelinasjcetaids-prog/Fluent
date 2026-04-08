@@ -1,0 +1,1549 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GrandStay Hotels — Revenue Analytics System</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+/* ═══════════════════════════════════════════
+   CSS VARIABLES & RESET
+═══════════════════════════════════════════ */
+:root {
+  --aqua:       #00d4c8;
+  --aqua-dark:  #00b8ad;
+  --aqua-glow:  #00ffe5;
+  --teal:       #007c75;
+  --navy:       #041e2c;
+  --navy2:      #062033;
+  --navy3:      #0a2d40;
+  --navy4:      #0d3550;
+  --card:       rgba(10,40,58,0.85);
+  --card2:      rgba(0,212,200,0.07);
+  --text:       #e8f4f4;
+  --muted:      #7ab8c0;
+  --border:     rgba(0,212,200,0.18);
+  --gold:       #f5c842;
+  --red:        #ff5f6d;
+  --green:      #36d399;
+  --font-h:     'Playfair Display', serif;
+  --font-b:     'DM Sans', sans-serif;
+  --font-m:     'Space Mono', monospace;
+  --radius:     16px;
+  --shadow:     0 8px 40px rgba(0,0,0,0.45);
+  --glow:       0 0 30px rgba(0,212,200,0.22);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-b);
+  background:var(--navy);
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+/* ═══════════════════════════════════════════
+   ANIMATED BACKGROUND MESH
+═══════════════════════════════════════════ */
+.bg-mesh{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,212,200,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 70% at 85% 80%, rgba(0,124,117,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(4,30,44,0.95) 0%, transparent 100%);
+  animation:meshPulse 8s ease-in-out infinite alternate;
+}
+@keyframes meshPulse{
+  0%{opacity:.7} 100%{opacity:1}
+}
+.bg-grid{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(0,212,200,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,200,0.04) 1px, transparent 1px);
+  background-size:60px 60px;
+}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.particle{
+  position:absolute;width:2px;height:2px;background:var(--aqua);
+  border-radius:50%;opacity:0;animation:floatUp linear infinite;
+}
+@keyframes floatUp{
+  0%{transform:translateY(100vh) scale(0);opacity:0}
+  10%{opacity:.7}
+  90%{opacity:.3}
+  100%{transform:translateY(-10vh) scale(1.5);opacity:0}
+}
+
+/* ═══════════════════════════════════════════
+   PAGE SYSTEM
+═══════════════════════════════════════════ */
+.page{display:none;position:relative;z-index:1;
+}
+.page.active{display:block;}
+
+.page-app{
+  background: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71') no-repeat center top;
+  background-size: cover;
+}
+.page-app::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:300px; /* blank area height */
+  background: linear-gradient(to bottom, rgba(4,30,44,0.9), transparent);
+  z-index:0;
+}
+
+/* ═══════════════════════════════════════════
+   LOGIN PAGE
+═══════════════════════════════════════════ */
+#page-login{
+  display:flex;align-items:center;justify-content:center;
+  background:none;
+}
+.login-wrap{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:0;
+  animation:fadeInUp .8s ease both;
+}
+@keyframes fadeInUp{
+  from{opacity:0;transform:translateY(40px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.login-logo{
+  font-family:var(--font-h);font-size:1.1rem;letter-spacing:.35em;
+  color:var(--aqua);text-transform:uppercase;margin-bottom:8px;
+  font-style:italic;
+}
+.login-crown{font-size:2.5rem;margin-bottom:6px;filter:drop-shadow(0 0 12px var(--aqua));}
+.login-title{
+  font-family:var(--font-h);font-size:2.6rem;font-weight:900;
+  color:#fff;text-align:center;line-height:1.1;
+  text-shadow:0 0 40px rgba(0,212,200,0.3);
+  margin-bottom:4px;
+}
+.login-title span{color:var(--aqua);}
+.login-sub{
+  font-size:.85rem;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;
+  margin-bottom:36px;font-family:var(--font-m);
+}
+.login-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:40px 44px;
+  width:380px;max-width:94vw;
+  backdrop-filter:blur(20px);
+  box-shadow:var(--shadow),var(--glow);
+  position:relative;overflow:hidden;
+}
+.login-card::before{
+  content:'';position:absolute;top:-1px;left:30px;right:30px;height:2px;
+  background:linear-gradient(90deg,transparent,var(--aqua),transparent);
+}
+.login-card::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(0,212,200,0.07),transparent);
+  pointer-events:none;
+}
+.form-group{margin-bottom:20px;}
+.form-label{
+  display:block;font-size:.75rem;letter-spacing:.12em;color:var(--aqua);
+  text-transform:uppercase;font-family:var(--font-m);margin-bottom:8px;
+}
+.form-input{
+  width:100%;background:rgba(0,0,0,0.3);border:1px solid var(--border);
+  border-radius:10px;padding:13px 16px;color:#fff;
+  font-family:var(--font-b);font-size:.95rem;outline:none;
+  transition:border-color .3s,box-shadow .3s;
+}
+.form-input:focus{
+  border-color:var(--aqua);
+  box-shadow:0 0 0 3px rgba(0,212,200,0.15);
+}
+.form-input::placeholder{color:rgba(255,255,255,0.25);}
+.btn-login{
+  width:100%;padding:15px;margin-top:8px;
+  background:linear-gradient(135deg,var(--aqua),var(--teal));
+  border:none;border-radius:10px;color:#041e2c;
+  font-family:var(--font-b);font-size:1rem;font-weight:700;
+  letter-spacing:.08em;cursor:pointer;
+  transition:transform .2s,box-shadow .2s,filter .2s;
+  position:relative;overflow:hidden;
+}
+.btn-login::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);
+}
+.btn-login:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 30px rgba(0,212,200,0.4);
+  filter:brightness(1.1);
+}
+.btn-login:active{transform:translateY(0);}
+.login-error{
+  display:none;background:rgba(255,95,109,0.12);border:1px solid rgba(255,95,109,0.3);
+  border-radius:8px;padding:10px 14px;margin-top:14px;
+  color:#ff8a94;font-size:.88rem;text-align:center;
+  animation:shake .4s ease;
+}
+.login-error.show{display:block;}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  20%,60%{transform:translateX(-6px)}
+  40%,80%{transform:translateX(6px)}
+}
+.login-hint{
+  margin-top:16px;font-size:.78rem;color:var(--muted);text-align:center;
+  font-family:var(--font-m);
+}
+.login-hint span{color:var(--aqua);}
+
+/* ═══════════════════════════════════════════
+   NAVBAR
+═══════════════════════════════════════════ */
+.navbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(4,30,44,0.92);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 32px;height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-brand{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--font-h);font-size:1.2rem;color:#fff;
+  font-style:italic;text-decoration:none;cursor:pointer;
+}
+.nav-brand .crown{font-size:1.4rem;filter:drop-shadow(0 0 8px var(--aqua));}
+.nav-brand span{color:var(--aqua);}
+.nav-links{display:flex;align-items:center;gap:4px;}
+.nav-link{
+  padding:8px 16px;border-radius:8px;
+  font-size:.88rem;font-family:var(--font-b);font-weight:500;
+  color:var(--muted);cursor:pointer;
+  transition:color .2s,background .2s;
+  border:none;background:transparent;letter-spacing:.02em;
+}
+.nav-link:hover,.nav-link.active{color:var(--aqua);background:rgba(0,212,200,0.08);}
+.nav-link.logout{color:var(--red);margin-left:8px;}
+.nav-link.logout:hover{background:rgba(255,95,109,0.1);}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;}
+.hamburger span{width:22px;height:2px;background:var(--aqua);border-radius:2px;transition:.3s;}
+@media(max-width:768px){
+  .hamburger{display:flex;}
+  .nav-links{
+    display:none;position:fixed;top:64px;left:0;right:0;
+    background:rgba(4,30,44,0.98);flex-direction:column;padding:16px;
+    border-bottom:1px solid var(--border);
+  }
+  .nav-links.open{display:flex;}
+  .nav-link{width:100%;padding:12px 16px;}
+}
+
+/* ═══════════════════════════════════════════
+   MAIN LAYOUT
+═══════════════════════════════════════════ */
+.main-content{
+  padding:5px 5px;   /* ⬅️ reduce pannalam */
+  max: width 400px;
+  margin:0 auto;
+}
+.scrollable-content{
+  margin-top:0 !important;
+  padding-top:0 !important;
+}
+
+/* ═══════════════════════════════════════════
+   SECTION HERO
+═══════════════════════════════════════════ */
+.section-hero{
+  text-align:center;padding:48px 0 40px;
+  animation:fadeInUp .6s ease both;
+}
+.section-badge{
+  display:inline-block;background:rgba(0,212,200,0.12);border:1px solid rgba(0,212,200,0.25);
+  border-radius:100px;padding:5px 16px;
+  font-size:.75rem;font-family:var(--font-m);color:var(--aqua);
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;
+}
+.section-title{
+  font-family:var(--font-h);font-size:2.8rem;font-weight:900;color:#fff;
+  line-height:1.15;margin-bottom:14px;
+}
+.section-title em{color:var(--aqua);font-style:italic;}
+.section-desc{
+  font-size:1rem;color:var(--muted);max-width:600px;margin:0 auto;
+  line-height:1.7;
+}
+@media(max-width:600px){.section-title{font-size:1.9rem;}}
+
+/* ═══════════════════════════════════════════
+   CARDS & GRIDS
+═══════════════════════════════════════════ */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+@media(max-width:900px){.grid-4{grid-template-columns:1fr 1fr;}.grid-3{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.grid-4,.grid-3,.grid-2{grid-template-columns:1fr;}}
+
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px;
+  backdrop-filter:blur(12px);
+  transition:transform .3s,box-shadow .3s,border-color .3s;
+  position:relative;overflow:hidden;
+  animation:fadeInUp .6s ease both;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,212,200,0.4),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.card:hover{
+  transform:translateY(-4px);
+  box-shadow:var(--shadow),0 0 40px rgba(0,212,200,0.12);
+  border-color:rgba(0,212,200,0.3);
+}
+.card:hover::before{opacity:1;}
+
+/* KPI Cards */
+.kpi-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:26px 24px;
+  backdrop-filter:blur(12px);
+  transition:transform .3s,box-shadow .3s;
+  position:relative;overflow:hidden;
+  animation:fadeInUp .6s ease both;
+}
+.kpi-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--aqua),var(--teal));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .4s ease;
+}
+.kpi-card:hover{transform:translateY(-5px);box-shadow:var(--shadow),var(--glow);}
+.kpi-card:hover::after{transform:scaleX(1);}
+.kpi-icon{font-size:1.8rem;margin-bottom:10px;display:block;}
+.kpi-value{
+  font-family:var(--font-h);font-size:2rem;font-weight:900;color:#fff;
+  line-height:1;margin-bottom:4px;
+}
+.kpi-label{font-size:.78rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;font-family:var(--font-m);}
+.kpi-change{font-size:.8rem;margin-top:8px;font-weight:600;}
+.kpi-change.up{color:var(--green);}
+.kpi-change.down{color:var(--red);}
+
+/* Chart containers */
+.chart-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px;
+  backdrop-filter:blur(12px);
+  animation:fadeInUp .7s ease both;
+}
+.chart-title{
+  font-family:var(--font-h);font-size:1.05rem;font-weight:700;
+  color:#fff;margin-bottom:20px;
+  display:flex;align-items:center;gap:8px;
+}
+.chart-title::before{
+  content:'';display:inline-block;width:3px;height:18px;
+  background:var(--aqua);border-radius:2px;
+}
+.chart-wrap{position:relative;height:260px;}
+
+/* ═══════════════════════════════════════════
+   COGNOS IFRAME EMBED
+═══════════════════════════════════════════ */
+.cognos-frame-wrap{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;
+  position:relative;animation:fadeInUp .7s ease both;
+}
+.cognos-frame-header{
+  padding:14px 20px;background:rgba(0,212,200,0.08);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.cognos-frame-header .ibm-badge{
+  background:var(--aqua);color:#041e2c;
+  font-size:.65rem;font-family:var(--font-m);font-weight:700;
+  letter-spacing:.1em;padding:3px 8px;border-radius:4px;
+}
+.cognos-frame-header .frame-title{
+  font-size:.9rem;font-weight:600;color:#fff;
+}
+.cognos-frame-header .live-dot{
+  width:7px;height:7px;background:var(--green);border-radius:50%;
+  animation:pulse 2s infinite;margin-left:auto;
+}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(54,211,153,.4)}50%{opacity:.8;box-shadow:0 0 0 6px rgba(54,211,153,0)}}
+.cognos-frame-wrap iframe{
+  display:block;width:100%;border:none;
+  background:#fff;
+}
+
+/* ═══════════════════════════════════════════
+   HOME PAGE
+═══════════════════════════════════════════ */
+.home-hero{
+   display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:60px 20px;
+  position:relative;
+}
+.home-hero-crown{
+  font-size:4rem;margin-bottom:16px;
+  filter:drop-shadow(0 0 20px var(--aqua));
+  animation:crownFloat 3s ease-in-out infinite;
+}
+@keyframes crownFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.home-hero-eyebrow{
+  font-family:var(--font-m);font-size:.78rem;letter-spacing:.25em;
+  color:var(--aqua);text-transform:uppercase;margin-bottom:18px;
+}
+.home-hero-title{
+  font-family:var(--font-h);font-size:3.8rem;font-weight:900;
+  line-height:1.08;color:#fff;margin-bottom:20px;
+  text-shadow:0 0 60px rgba(0,212,200,0.2);
+}
+.home-hero-title em{color:var(--aqua);font-style:italic;}
+.home-hero-sub{
+  font-size:1.05rem;color:var(--muted);max-width:580px;line-height:1.75;
+  margin-bottom:40px;
+}
+.home-stats{
+  display:flex;gap:40px;justify-content:center;flex-wrap:wrap;
+  margin-bottom:40px;
+}
+.stat-pill{
+  display:flex;flex-direction:column;align-items:center;
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:14px;padding:18px 28px;
+  min-width:100px;
+  transition:transform .3s,box-shadow .3s;
+}
+.stat-pill:hover{transform:translateY(-4px);box-shadow:var(--glow);}
+.stat-num{
+  font-family:var(--font-h);font-size:2rem;font-weight:900;
+  color:var(--aqua);line-height:1;
+}
+.stat-lbl{font-size:.72rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:5px;font-family:var(--font-m);}
+.home-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+.btn-primary{
+  padding:14px 30px;border-radius:10px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--aqua),var(--teal));
+  color:#041e2c;font-family:var(--font-b);font-weight:700;font-size:.95rem;
+  letter-spacing:.04em;transition:transform .2s,box-shadow .2s,filter .2s;
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,212,200,0.4);filter:brightness(1.08);}
+.btn-secondary{
+  padding:13px 28px;border-radius:10px;cursor:pointer;
+  background:transparent;color:var(--aqua);
+  border:1.5px solid var(--border);
+  font-family:var(--font-b);font-weight:600;font-size:.95rem;
+  transition:border-color .2s,background .2s,transform .2s;
+}
+.btn-secondary:hover{border-color:var(--aqua);background:rgba(0,212,200,0.07);transform:translateY(-2px);}
+
+.home-modules{margin-top:60px;}
+.modules-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
+  margin-top:32px;
+}
+@media(max-width:900px){.modules-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:500px){.modules-grid{grid-template-columns:1fr;}}
+.module-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:28px 22px;text-align:center;
+  cursor:pointer;
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+  animation:fadeInUp .7s ease both;
+}
+.module-card:hover{
+  transform:translateY(-6px);border-color:var(--aqua);
+  box-shadow:var(--shadow),0 0 30px rgba(0,212,200,0.15);
+}
+.module-icon{font-size:2.4rem;margin-bottom:14px;display:block;}
+.module-name{
+  font-family:var(--font-h);font-size:1.1rem;font-weight:700;
+  color:#fff;margin-bottom:8px;
+}
+.module-desc{font-size:.82rem;color:var(--muted);line-height:1.55;}
+.module-tag{
+  display:inline-block;margin-top:12px;
+  background:rgba(0,212,200,0.12);border:1px solid rgba(0,212,200,0.2);
+  border-radius:100px;padding:3px 12px;
+  font-size:.7rem;color:var(--aqua);font-family:var(--font-m);letter-spacing:.08em;
+}
+
+/* ═══════════════════════════════════════════
+   REPORTS PAGE
+═══════════════════════════════════════════ */
+.reports-tabs{
+  display:flex;gap:8px;margin-bottom:28px;
+  border-bottom:1px solid var(--border);padding-bottom:0;
+  flex-wrap:wrap;
+}
+
+.report3-placeholder img{
+  width:100%;
+  height:520px;
+  object-fit:contain;
+}
+.tab-btn{
+  padding:10px 20px;border:none;background:transparent;
+  color:var(--muted);font-family:var(--font-b);font-size:.9rem;font-weight:500;
+  cursor:pointer;position:relative;transition:color .2s;
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+}
+.tab-btn.active,.tab-btn:hover{color:var(--aqua);}
+.tab-btn.active{border-bottom-color:var(--aqua);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeInUp .4s ease both;}
+
+/* Report table */
+.rev-table-wrap{overflow-x:auto;border-radius:var(--radius);margin-top:20px;}
+.rev-table{width:100%;border-collapse:collapse;font-size:.9rem;}
+.rev-table th{
+  background:rgba(0,212,200,0.1);color:var(--aqua);
+  font-family:var(--font-m);font-size:.73rem;letter-spacing:.1em;
+  text-transform:uppercase;padding:14px 18px;text-align:left;
+  border-bottom:1px solid var(--border);
+}
+.rev-table td{
+  padding:13px 18px;color:var(--text);border-bottom:1px solid rgba(0,212,200,0.07);
+}
+.rev-table tr:hover td{background:rgba(0,212,200,0.04);}
+.rev-table tr:last-child td{border-bottom:none;}
+.badge{
+  display:inline-block;padding:3px 10px;border-radius:100px;
+  font-size:.73rem;font-family:var(--font-m);font-weight:700;
+}
+.badge-green{background:rgba(54,211,153,0.15);color:var(--green);}
+.badge-red{background:rgba(255,95,109,0.15);color:var(--red);}
+.badge-gold{background:rgba(245,200,66,0.15);color:var(--gold);}
+
+/* ═══════════════════════════════════════════
+   DASHBOARD FILTERS
+═══════════════════════════════════════════ */
+.filter-bar{
+  display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+  margin-bottom:28px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:16px 20px;
+}
+.filter-group{display:flex;align-items:center;gap:10px;flex:1;min-width:160px;}
+.filter-label{font-size:.75rem;color:var(--aqua);font-family:var(--font-m);letter-spacing:.08em;white-space:nowrap;}
+.filter-select{
+  background:rgba(0,0,0,0.3);border:1px solid var(--border);
+  border-radius:8px;padding:8px 14px;color:#fff;
+  font-family:var(--font-b);font-size:.88rem;outline:none;flex:1;
+  cursor:pointer;transition:border-color .2s;
+}
+.filter-select:focus{border-color:var(--aqua);}
+.filter-select option{background:var(--navy3);}
+
+/* ═══════════════════════════════════════════
+   EXPLORATION PAGE
+═══════════════════════════════════════════ */
+.insight-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:0;overflow:hidden;
+  animation:fadeInUp .7s ease both;
+  transition:transform .3s,box-shadow .3s;
+}
+.insight-card:hover{transform:translateY(-4px);box-shadow:var(--shadow),var(--glow);}
+.insight-card-header{
+  padding:18px 20px 14px;
+  background:rgba(0,212,200,0.05);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;gap:12px;
+}
+.insight-icon{font-size:1.5rem;}
+.insight-card-title{font-family:var(--font-h);font-size:1rem;font-weight:700;color:#fff;margin-bottom:5px;}
+.insight-card-desc{font-size:.82rem;color:var(--muted);line-height:1.5;}
+.insight-frame-area{padding:0;}
+
+/* ═══════════════════════════════════════════
+   STORY PAGE
+═══════════════════════════════════════════ */
+.story-scene{display:none;animation:sceneIn .5s ease both;}
+.story-scene.active{display:block;}
+@keyframes sceneIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.story-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:28px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:16px 24px;
+}
+.story-dots{display:flex;gap:8px;align-items:center;}
+.story-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--border);cursor:pointer;transition:all .3s;border:none;
+}
+.story-dot.active{background:var(--aqua);transform:scale(1.3);}
+.story-btn{
+  display:flex;align-items:center;gap:8px;padding:10px 22px;
+  border-radius:8px;border:1.5px solid var(--border);
+  background:transparent;color:var(--aqua);cursor:pointer;
+  font-family:var(--font-b);font-weight:600;font-size:.88rem;
+  transition:background .2s,border-color .2s,transform .2s;
+}
+.story-btn:hover{background:rgba(0,212,200,0.08);border-color:var(--aqua);transform:translateY(-2px);}
+.story-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+.scene-label{
+  font-size:.75rem;color:var(--muted);font-family:var(--font-m);letter-spacing:.1em;
+}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+.footer{
+  position:relative;z-index:1;
+  border-top:1px solid var(--border);
+  padding:20px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+  background:rgba(4,30,44,0.7);
+  backdrop-filter:blur(10px);
+}
+.footer-text{
+  font-size:.8rem;color:var(--muted);font-family:var(--font-m);
+  letter-spacing:.06em;
+}
+.footer-text strong{color:var(--aqua);}
+.footer-right{font-size:.75rem;color:rgba(255,255,255,0.25);font-family:var(--font-m);}
+
+/* ═══════════════════════════════════════════
+   DIVIDERS & MISC
+═══════════════════════════════════════════ */
+.section-divider{
+  border:none;border-top:1px solid var(--border);
+  margin:40px 0;
+}
+.page-section{margin-bottom:48px;}
+.page-section-title{
+  font-family:var(--font-h);font-size:1.4rem;font-weight:700;color:#fff;
+  margin-bottom:20px;display:flex;align-items:center;gap:12px;
+}
+.page-section-title .dot{
+  width:8px;height:8px;background:var(--aqua);border-radius:50%;
+  flex-shrink:0;box-shadow:0 0 8px var(--aqua);
+}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.tag{
+  background:rgba(0,212,200,0.1);border:1px solid rgba(0,212,200,0.2);
+  border-radius:100px;padding:4px 14px;
+  font-size:.75rem;color:var(--aqua);font-family:var(--font-m);
+}
+
+
+/* Animate delays */
+.card:nth-child(1){animation-delay:.05s}
+.card:nth-child(2){animation-delay:.1s}
+.card:nth-child(3){animation-delay:.15s}
+.card:nth-child(4){animation-delay:.2s}
+.kpi-card:nth-child(1){animation-delay:.05s}
+.kpi-card:nth-child(2){animation-delay:.12s}
+.kpi-card:nth-child(3){animation-delay:.19s}
+.kpi-card:nth-child(4){animation-delay:.26s}
+</style>
+</head>
+<body>
+
+<!-- BG EFFECTS -->
+<div class="bg-mesh"></div>
+<div class="bg-grid"></div>
+<div class="particles" id="particles"></div>
+
+<!-- ════════════════════════════════════
+     LOGIN PAGE
+════════════════════════════════════ -->
+<div class="page active" id="page-login">
+  <div class="login-wrap">
+    <div class="login-crown">👑</div>
+    <div class="login-logo">IBM Cognos Analytics · Case Study 8</div>
+    <h1 class="login-title">GrandStay <span>Hotels</span></h1>
+    <div class="login-sub">Revenue Analytics System</div>
+    <div class="login-card">
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input type="text" class="form-input" id="loginUser" placeholder="Enter username" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" id="loginPass" placeholder="Enter password">
+      </div>
+      <button class="btn-login" onclick="doLogin()">Sign In →</button>
+      <div class="login-error" id="loginErr">❌ Invalid credentials. Please try again.</div>
+      <div class="login-hint">Demo: <span>admin</span> / <span>1234</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     MAIN APP (post-login)
+════════════════════════════════════ -->
+<div class="page" id="page-app">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-brand" onclick="showPage('home')">
+      <span class="crown">👑</span>
+      <span>Grand<span>Stay</span></span>
+    </div>
+    <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <button class="nav-link active" onclick="showPage('home')">Home</button>
+      <button class="nav-link" onclick="showPage('reports')">Reports</button>
+      <button class="nav-link" onclick="showPage('dashboard')">Dashboard</button>
+      <button class="nav-link" onclick="showPage('exploration')">Exploration</button>
+      <button class="nav-link" onclick="showPage('story')">Story</button>
+      <button class="nav-link logout" onclick="doLogout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- ── HOME ── -->
+  <div id="inner-home" >
+    <div class="main-content">
+      <div class="home-hero">
+        <div class="home-hero-crown">👑</div>
+        <div class="home-hero-eyebrow">IBM Cognos Analytics · Case Study 8 · Hospitality</div>
+        <h1 class="home-hero-title">GrandStay Hotels<br><em>Revenue Analytics</em></h1>
+        <p class="home-hero-sub">A luxury hotel chain spanning 12 properties across 6 Indian cities — analyzed through IBM Cognos Analytics to optimize room pricing, F&amp;B performance, and guest satisfaction.</p>
+        <div class="home-stats">
+          <div class="stat-pill"><div class="stat-num">12</div><div class="stat-lbl">Properties</div></div>
+          <div class="stat-pill"><div class="stat-num">6</div><div class="stat-lbl">Cities</div></div>
+          <div class="stat-pill"><div class="stat-num">4</div><div class="stat-lbl">Modules</div></div>
+          <div class="stat-pill"><div class="stat-num">6</div><div class="stat-lbl">Case Q's</div></div>
+        </div>
+        <div class="home-btns">
+          <button class="btn-primary" onclick="showPage('dashboard')">View Dashboard →</button>
+          <button class="btn-secondary" onclick="showPage('reports')">Browse Reports</button>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <div class="home-modules">
+        <div class="section-hero" style="padding:0 0 28px">
+          <div class="section-badge">Cognos Architecture</div>
+          <h2 class="section-title">IBM Cognos <em>Modules</em></h2>
+          <p class="section-desc">Four powerful analytics capabilities used to build this complete revenue management solution.</p>
+        </div>
+        <div class="modules-grid">
+          <div class="module-card" onclick="showPage('reports')">
+            <span class="module-icon">📊</span>
+            <div class="module-name">Reporting</div>
+            <p class="module-desc">Revenue reports, occupancy analysis, conditional styling, prompts, and branded output.</p>
+            <span class="module-tag">Q1 · Q2 · Q3</span>
+          </div>
+          <div class="module-card" onclick="showPage('exploration')">
+            <span class="module-icon">🔍</span>
+            <div class="module-name">Exploration</div>
+            <p class="module-desc">AI-assisted data discovery — correlations between booking channel, stay length, and satisfaction.</p>
+            <span class="module-tag">Q4</span>
+          </div>
+          <div class="module-card" onclick="showPage('dashboard')">
+            <span class="module-icon">📈</span>
+            <div class="module-name">Dashboard</div>
+            <p class="module-desc">KPI tiles, bar/line/pie charts, top guest tables, with property and date filters.</p>
+            <span class="module-tag">Q5</span>
+          </div>
+          <div class="module-card" onclick="showPage('story')">
+            <span class="module-icon">📖</span>
+            <div class="module-name">Story Making</div>
+            <p class="module-desc">6-scene narrative presenting the annual hospitality review from overview to strategy.</p>
+            <span class="module-tag">Q6</span>
+          </div>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- Business Context -->
+      <div class="page-section">
+        <div class="section-hero" style="padding:0 0 28px">
+          <div class="section-badge">Business Context</div>
+          <h2 class="section-title">Real-Time <em>Challenges</em></h2>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <div style="font-size:2rem;margin-bottom:12px;">📉</div>
+            <div style="font-family:var(--font-h);font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:8px;">Inconsistent Occupancy</div>
+            <p style="font-size:.85rem;color:var(--muted);line-height:1.6;">Significant variance in room occupancy across properties, requiring dynamic pricing intervention.</p>
+          </div>
+          <div class="card">
+            <div style="font-size:2rem;margin-bottom:12px;">🍽️</div>
+            <div style="font-family:var(--font-h);font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:8px;">Declining F&B Revenue</div>
+            <p style="font-size:.85rem;color:var(--muted);line-height:1.6;">F&B revenue declining at certain properties, requiring deeper analysis of spend patterns and upselling.</p>
+          </div>
+          <div class="card">
+            <div style="font-size:2rem;margin-bottom:12px;">⭐</div>
+            <div style="font-family:var(--font-h);font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:8px;">Poor Review Scores</div>
+            <p style="font-size:.85rem;color:var(--muted);line-height:1.6;">Guest review scores below 6/10 at select properties are damaging brand reputation and bookings.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="footer-text"><strong>GrandStay Hotels</strong> | Internal Use Only</div>
+      <div class="footer-right">IBM Cognos Analytics · Case Study 8 · FY 2024</div>
+    </footer>
+  </div>
+
+  <!-- ── REPORTS ── -->
+  <div id="inner-reports" style="display:none">
+    <div class="main-content">
+      <div class="section-hero">
+        <div class="section-badge">Reporting Module</div>
+        <h2 class="section-title">Revenue <em>Reports</em></h2>
+        <p class="section-desc">Branded IBM Cognos reports with conditional styling, prompts, and full revenue breakdowns.</p>
+      </div>
+
+      <div class="reports-tabs">
+        <button class="tab-btn active" onclick="switchTab('report1',this)">Q1 · Revenue by Property</button>
+        <button class="tab-btn" onclick="switchTab('report2',this)">Q2 · Room Occupancy</button>
+        <button class="tab-btn" onclick="switchTab('report3',this)">Q3 · Monthly Trends</button>
+      </div>
+
+      <!-- REPORT 1 -->
+      <div class="tab-panel active" id="tab-report1">
+        <div class="tag-row">
+          <span class="tag">Reporting</span>
+          <span class="tag">Conditional Styling</span>
+          <span class="tag">Prompt: Booking Channel</span>
+        </div>
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:24px;line-height:1.65;">
+          Complete revenue report with branded GrandStay header. Shows Room, F&B, Spa &amp; Total Revenue per property. Guest ratings below 6 are highlighted in Red. Includes payment mode prompts (Credit Card, Cash, Debit Card, UPI).
+        </p>
+        <!-- COGNOS REPORT 1 EMBED -->
+        <div class="cognos-frame-wrap" style="margin-bottom:28px;">
+          <div class="cognos-frame-header">
+            <span class="ibm-badge">IBM COGNOS</span>
+            <span class="frame-title">Q1 — Revenue Report by Property</span>
+            <span class="live-dot"></span>
+          </div>
+          <iframe
+            src="https://ap2.ca.analytics.ibm.com/bi/?pathRef=.my_folders%2FNew%2Breport1&closeWindowOnLastView=true&ui_appbar=false&ui_navbar=false&shareMode=embedded&action=run&format=HTML&prompt=false&promptParameters=%5B%7B%22name%22%3A%22Parameter1%22%2C%22value%22%3A%5B%7B%22use%22%3A%22Credit%20Card%22%2C%22display%22%3A%22Credit%20Card%22%7D%2C%7B%22use%22%3A%22Cash%22%2C%22display%22%3A%22Cash%22%7D%2C%7B%22use%22%3A%22Debit%20Card%22%2C%22display%22%3A%22Debit%20Card%22%7D%2C%7B%22use%22%3A%22UPI%22%2C%22display%22%3A%22UPI%22%7D%5D%7D%5D&nav_filter=true"
+            height="520" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen
+            style="width:100%"></iframe>
+        </div>
+
+        <!-- Sample Table Preview -->
+        <div class="page-section-title"><span class="dot"></span> Summary Table Preview</div>
+        <div class="rev-table-wrap">
+          <table class="rev-table">
+            <thead>
+              <tr>
+                <th>Property</th><th>City</th><th>Room Revenue</th><th>F&B Revenue</th><th>Spa Revenue</th><th>Total Revenue</th><th>Guest Rating</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>GrandStay Juhu</td><td>Mumbai</td><td>₹18.4L</td><td>₹6.2L</td><td>₹2.1L</td><td>₹26.7L</td><td><span class="badge badge-green">8.2</span></td></tr>
+              <tr><td>GrandStay Colaba</td><td>Mumbai</td><td>₹16.8L</td><td>₹5.9L</td><td>₹1.8L</td><td>₹24.5L</td><td><span class="badge badge-green">7.8</span></td></tr>
+              <tr><td>GrandStay Connaught</td><td>Delhi</td><td>₹14.2L</td><td>₹4.8L</td><td>₹1.4L</td><td>₹20.4L</td><td><span class="badge badge-gold">6.5</span></td></tr>
+              <tr><td>GrandStay Aerocity</td><td>Delhi</td><td>₹12.1L</td><td>₹3.9L</td><td>₹0.9L</td><td>₹16.9L</td><td><span class="badge badge-red">5.4</span></td></tr>
+              <tr><td>GrandStay Calangute</td><td>Goa</td><td>₹15.6L</td><td>₹7.1L</td><td>₹3.2L</td><td>₹25.9L</td><td><span class="badge badge-green">8.7</span></td></tr>
+              <tr><td>GrandStay Panaji</td><td>Goa</td><td>₹13.4L</td><td>₹5.5L</td><td>₹2.4L</td><td>₹21.3L</td><td><span class="badge badge-green">7.9</span></td></tr>
+              <tr><td>GrandStay Pink City</td><td>Jaipur</td><td>₹11.8L</td><td>₹4.1L</td><td>₹1.5L</td><td>₹17.4L</td><td><span class="badge badge-red">5.8</span></td></tr>
+              <tr><td>GrandStay Amer</td><td>Jaipur</td><td>₹10.2L</td><td>₹3.4L</td><td>₹1.1L</td><td>₹14.7L</td><td><span class="badge badge-gold">6.9</span></td></tr>
+              <tr><td>GrandStay Koramangala</td><td>Bengaluru</td><td>₹17.3L</td><td>₹5.7L</td><td>₹1.9L</td><td>₹24.9L</td><td><span class="badge badge-green">7.6</span></td></tr>
+              <tr><td>GrandStay Whitefield</td><td>Bengaluru</td><td>₹15.9L</td><td>₹5.2L</td><td>₹1.7L</td><td>₹22.8L</td><td><span class="badge badge-green">8.1</span></td></tr>
+              <tr><td>GrandStay ECR</td><td>Chennai</td><td>₹12.6L</td><td>₹4.3L</td><td>₹1.3L</td><td>₹18.2L</td><td><span class="badge badge-gold">6.3</span></td></tr>
+              <tr><td>GrandStay Anna Nagar</td><td>Chennai</td><td>₹11.1L</td><td>₹3.8L</td><td>₹1.0L</td><td>₹15.9L</td><td><span class="badge badge-red">5.6</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- REPORT 2 -->
+      <div class="tab-panel" id="tab-report2">
+        <div class="tag-row">
+          <span class="tag">Reporting</span>
+          <span class="tag">Traffic-Light Styling</span>
+          <span class="tag">Occupancy %</span>
+        </div>
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:24px;line-height:1.65;">
+          Monthly occupancy breakdown by room type with traffic-light conditional styling. &gt;80% = Green, 60–80% = Amber, &lt;60% = Red. Includes property and month prompts with performance summary footer.
+        </p>
+        <div class="cognos-frame-wrap">
+          <div class="cognos-frame-header">
+            <span class="ibm-badge">IBM COGNOS</span>
+            <span class="frame-title">Q2 — Room Occupancy Analysis Report</span>
+            <span class="live-dot"></span>
+          </div>
+          <iframe
+            src="https://ap2.ca.analytics.ibm.com/bi/?pathRef=.my_folders%2FNew%2Breport2&closeWindowOnLastView=true&ui_appbar=false&ui_navbar=false&shareMode=embedded&action=run&format=HTML&prompt=false&promptParameters=%5B%7B%22name%22%3A%22Parameter1%22%2C%22value%22%3A%5B%7B%22use%22%3A%22Credit%20Card%22%2C%22display%22%3A%22Credit%20Card%22%7D%2C%7B%22use%22%3A%22Cash%22%2C%22display%22%3A%22Cash%22%7D%2C%7B%22use%22%3A%22Debit%20Card%22%2C%22display%22%3A%22Debit%20Card%22%7D%2C%7B%22use%22%3A%22UPI%22%2C%22display%22%3A%22UPI%22%7D%5D%7D%5D&nav_filter=true"
+            height="520" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen
+            style="width:100%"></iframe>
+        </div>
+      </div>
+
+      <!-- REPORT 3 — Monthly Trends (local chart since no saved link) -->
+      <div class="tab-panel" id="tab-report3">
+        <div class="tag-row">
+          <span class="tag">Reporting</span>
+          <span class="tag">Bar / Line Chart</span>
+          <span class="tag">YTD Growth</span>
+        </div>
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:24px;line-height:1.65;">
+          Prompt-based report allowing revenue managers to choose chart type (Bar or Line) for trend analysis. Segmented by Property with date range prompt. Shows YTD total revenue and MoM growth % with dark green conditional styling for positive growth.
+        </p>
+    
+         <div class="report3-placeholder">
+              <img src=image.png alt="Report 3 Visualization" style="width:100%; height:520px; object-fit:contain;">
+         </div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="footer-text"><strong>GrandStay Hotels</strong> | Internal Use Only</div>
+      <div class="footer-right">Reports Module · IBM Cognos Analytics</div>
+    </footer>
+  </div>
+
+  <!-- ── DASHBOARD ── -->
+  <div id="inner-dashboard"  style="display:none">
+    <div class="main-content">
+      <div class="section-hero">
+        <div class="section-badge">Dashboard Module · Q5</div>
+        <h2 class="section-title">Revenue <em>Dashboard</em></h2>
+        <p class="section-desc">Executive-ready live dashboard combining KPIs, charts, and guest analytics in a single pane of glass.</p>
+      </div>
+
+      <!-- LIVE COGNOS DASHBOARD -->
+      <div class="cognos-frame-wrap" style="margin-bottom:36px;">
+        <div class="cognos-frame-header">
+          <span class="ibm-badge">IBM COGNOS</span>
+          <span class="frame-title">Q5 — Hotel Revenue Management Dashboard · Live</span>
+          <span class="live-dot"></span>
+        </div>
+        <iframe
+          src="https://ap2.ca.analytics.ibm.com/bi/?perspective=dashboard&pathRef=.my_folders%2FNew%2Bdashboard%2B4&closeWindowOnLastView=true&ui_appbar=false&ui_navbar=false&shareMode=embedded&action=view&mode=dashboard&subView=model0000019d6698e478_00000007&nav_filter=true"
+          height="620" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen
+          style="width:100%"></iframe>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <div class="filter-group">
+          <span class="filter-label">Property</span>
+          <select class="filter-select" id="filterProp">
+            <option>All Properties</option>
+            <option>Mumbai — GrandStay Juhu</option>
+            <option>Mumbai — GrandStay Colaba</option>
+            <option>Goa — GrandStay Calangute</option>
+            <option>Goa — GrandStay Panaji</option>
+            <option>Delhi — GrandStay Connaught</option>
+            <option>Bengaluru — GrandStay Koramangala</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Period</span>
+          <select class="filter-select" id="filterDate">
+            <option>FY 2024 (Full Year)</option>
+            <option>Q1 Jan–Mar</option>
+            <option>Q2 Apr–Jun</option>
+            <option>Q3 Jul–Sep</option>
+            <option>Q4 Oct–Dec</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="grid-4" style="margin-bottom:28px;">
+        <div class="kpi-card">
+          <span class="kpi-icon">💰</span>
+          <div class="kpi-value">₹4.2 Cr</div>
+          <div class="kpi-label">Total Revenue</div>
+          <div class="kpi-change up">▲ 12.4% vs last year</div>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-icon">🛏️</span>
+          <div class="kpi-value">3.4 nights</div>
+          <div class="kpi-label">Avg Stay Duration</div>
+          <div class="kpi-change up">▲ 0.3 vs last year</div>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-icon">⭐</span>
+          <div class="kpi-value">7.8 / 10</div>
+          <div class="kpi-label">Avg Guest Rating</div>
+          <div class="kpi-change down">▼ 0.3 vs last year</div>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-icon">🍽️</span>
+          <div class="kpi-value">₹1.1 Cr</div>
+          <div class="kpi-label">Total F&B Revenue</div>
+          <div class="kpi-change up">▲ 8.7% vs last year</div>
+        </div>
+      </div>
+
+      <!-- Charts row -->
+      <div class="grid-2" style="margin-bottom:24px;">
+        <div class="chart-card">
+          <div class="chart-title">Revenue by Property (₹ Lakhs)</div>
+          <div class="chart-wrap"><canvas id="chartBar"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Booking Channel Split</div>
+          <div class="chart-wrap"><canvas id="chartPie"></canvas></div>
+        </div>
+      </div>
+      <div class="chart-card" style="margin-bottom:28px;">
+        <div class="chart-title">Monthly Revenue Trend (FY 2024)</div>
+        <div class="chart-wrap"><canvas id="chartLine"></canvas></div>
+      </div>
+
+      <!-- Top Guests -->
+      <div class="page-section-title"><span class="dot"></span>Top 5 Guests by Total Spend</div>
+      <div class="rev-table-wrap">
+        <table class="rev-table">
+          <thead>
+            <tr><th>#</th><th>Guest Name</th><th>City</th><th>Stays</th><th>Booking Channel</th><th>Total Spend</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>01</td><td>Rajiv Mehta</td><td>Mumbai</td><td>4</td><td>Direct</td><td><strong style="color:var(--aqua)">₹2.4L</strong></td></tr>
+            <tr><td>02</td><td>Priya Sharma</td><td>Delhi</td><td>3</td><td>Online (OTA)</td><td><strong style="color:var(--aqua)">₹1.9L</strong></td></tr>
+            <tr><td>03</td><td>Arjun Nair</td><td>Bengaluru</td><td>5</td><td>Direct</td><td><strong style="color:var(--aqua)">₹1.7L</strong></td></tr>
+            <tr><td>04</td><td>Sunita Rao</td><td>Goa</td><td>2</td><td>Agent</td><td><strong style="color:var(--aqua)">₹1.5L</strong></td></tr>
+            <tr><td>05</td><td>Vikram Singh</td><td>Jaipur</td><td>3</td><td>Online (OTA)</td><td><strong style="color:var(--aqua)">₹1.3L</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="footer-text"><strong>GrandStay Hotels</strong> | Internal Use Only</div>
+      <div class="footer-right">Dashboard Module · IBM Cognos Analytics</div>
+    </footer>
+  </div>
+
+  <!-- ── EXPLORATION ── -->
+  <div id="inner-exploration"  style="display:none">
+    <div class="main-content">
+      <div class="section-hero">
+        <div class="section-badge">Exploration Module · Q4</div>
+        <h2 class="section-title">AI-Assisted <em>Exploration</em></h2>
+        <p class="section-desc">IBM Cognos Exploration's AI-driven pattern detection uncovering hidden correlations across bookings, channels, and guest satisfaction.</p>
+      </div>
+
+      <!-- Exploration 1: My content single -->
+      <div class="insight-card" style="margin-bottom:24px;">
+        <div class="insight-card-header">
+          <span class="insight-icon">📏</span>
+          <div>
+            <div class="insight-card-title">Length of Stay vs Total Bill</div>
+            <div class="insight-card-desc">Correlation between how long guests stay and the total amount they spend — identifying high-value stay patterns and revenue sweet spots.</div>
+          </div>
+        </div>
+        <div class="insight-frame-area">
+          <div style="padding:0 20px 12px;background:rgba(0,212,200,0.04);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding-top:10px;">
+            <span class="ibm-badge" style="background:var(--aqua);color:#041e2c;font-size:.65rem;font-family:var(--font-m);font-weight:700;letter-spacing:.1em;padding:3px 8px;border-radius:4px;">IBM COGNOS EXPLORE</span>
+            <span style="font-size:.82rem;color:var(--muted);">My Content — Single View</span>
+          </div>
+          <iframe
+            src="https://ap2.ca.analytics.ibm.com/bi/?perspective=explore&pathRef=.my_folders%2FReport%2BQuestion%2B4&closeWindowOnLastView=true&ui_appbar=false&ui_navbar=false&shareMode=embedded&subView=model0000019d544062cb_00000004&nav_filter=true"
+            height="460" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen
+            style="width:100%;display:block;border:none;background:#fff;"></iframe>
+        </div>
+      </div>
+
+      <!-- Exploration 2: My content double -->
+      <div class="insight-card" style="margin-bottom:24px;">
+        <div class="insight-card-header">
+          <span class="insight-icon">📡</span>
+          <div>
+            <div class="insight-card-title">Booking Channel vs Revenue</div>
+            <div class="insight-card-desc">Which booking channels — OTA, Direct, Agent — generate the highest revenue per stay, and how discount patterns vary by channel.</div>
+          </div>
+        </div>
+        <div class="insight-frame-area">
+          <div style="padding:10px 20px;background:rgba(0,212,200,0.04);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+            <span class="ibm-badge" style="background:var(--aqua);color:#041e2c;font-size:.65rem;font-family:var(--font-m);font-weight:700;letter-spacing:.1em;padding:3px 8px;border-radius:4px;">IBM COGNOS EXPLORE</span>
+            <span style="font-size:.82rem;color:var(--muted);">My Content — Double View</span>
+          </div>
+          <iframe
+            src="https://ap2.ca.analytics.ibm.com/bi/?perspective=explore&pathRef=.my_folders%2FReport%2BQuestion%2B4&closeWindowOnLastView=true&ui_appbar=false&ui_navbar=false&shareMode=embedded&subView=model0000019d54502d59_00000000&nav_filter=true"
+            height="460" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen
+            style="width:100%;display:block;border:none;background:#fff;"></iframe>
+        </div>
+      </div>
+
+      <!-- Exploration 3: Team content single -->
+      <div class="insight-card" style="margin-bottom:24px;">
+        <div class="insight-card-header">
+          <span class="insight-icon">🏨</span>
+          <div>
+            <div class="insight-card-title">Guest Rating vs Room Type</div>
+            <div class="insight-card-desc">How room type (Standard, Deluxe, Suite) correlates with guest satisfaction scores, and which room categories drive the best reviews.</div>
+          </div>
+        </div>
+        <div class="insight-frame-area">
+          <div style="padding:10px 20px;background:rgba(0,212,200,0.04);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+            <span class="ibm-badge" style="background:var(--aqua);color:#041e2c;font-size:.65rem;font-family:var(--font-m);font-weight:700;letter-spacing:.1em;padding:3px 8px;border-radius:4px;">IBM COGNOS EXPLORE</span>
+            <span style="font-size:.82rem;color:var(--muted);">Team Content — Single View</span>
+          </div>
+          <iframe
+            src="https://ap2.ca.analytics.ibm.com/bi/?perspective=explore&pathRef=.my_folders%2FReport%2BQuestion%2B4&closeWindowOnLastView=true&ui_appbar=false&ui_navbar=false&shareMode=embedded&subView=model0000019d545b918d_00000004&nav_filter=true"
+            height="460" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen
+            style="width:100%;display:block;border:none;background:#fff;"></iframe>
+        </div>
+      </div>
+
+      <!-- Exploration 4: Team content double -->
+      <div class="insight-card" style="margin-bottom:24px;">
+        <div class="insight-card-header">
+          <span class="insight-icon">💹</span>
+          <div>
+            <div class="insight-card-title">Revenue Patterns — Advanced Exploration</div>
+            <div class="insight-card-desc">Multi-dimensional exploration of revenue patterns across room rate, guest nationality, and payment mode — revealing pricing optimization opportunities.</div>
+          </div>
+        </div>
+        <div class="insight-frame-area">
+          <div style="padding:10px 20px;background:rgba(0,212,200,0.04);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+            <span class="ibm-badge" style="background:var(--aqua);color:#041e2c;font-size:.65rem;font-family:var(--font-m);font-weight:700;letter-spacing:.1em;padding:3px 8px;border-radius:4px;">IBM COGNOS EXPLORE</span>
+            <span style="font-size:.82rem;color:var(--muted);">Team Content — Double View</span>
+          </div>
+          <iframe
+            src="https://ap2.ca.analytics.ibm.com/bi/?perspective=explore&pathRef=.my_folders%2FReport%2BQuestion%2B4&closeWindowOnLastView=true&ui_appbar=false&ui_navbar=false&shareMode=embedded&subView=model0000019d54602124_00000004&nav_filter=true"
+            height="460" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen
+            style="width:100%;display:block;border:none;background:#fff;"></iframe>
+        </div>
+      </div>
+
+    </div>
+    <footer class="footer">
+      <div class="footer-text"><strong>GrandStay Hotels</strong> | Internal Use Only</div>
+      <div class="footer-right">Exploration Module · IBM Cognos Analytics</div>
+    </footer>
+  </div>
+
+  <!-- ── STORY ── -->
+  <div id="inner-story" style="display:none">
+    <div class="main-content">
+      <div class="section-hero">
+        <div class="section-badge">Story Making Module · Q6</div>
+        <h2 class="section-title">Annual Hospitality <em>Review</em></h2>
+        <p class="section-desc">A 6-scene guided narrative from IBM Cognos Story Making — walking stakeholders from data to strategic decisions.</p>
+      </div>
+
+      <!-- LIVE COGNOS STORY EMBED -->
+      <div class="cognos-frame-wrap" style="margin-bottom:36px;">
+        <div class="cognos-frame-header">
+          <span class="ibm-badge">IBM COGNOS STORY</span>
+          <span class="frame-title">Q6 — Annual Hospitality Review Story · All Scenes</span>
+          <span class="live-dot"></span>
+        </div>
+        <iframe
+          src="https://ap2.ca.analytics.ibm.com/bi/?perspective=story&pathRef=.my_folders%2FQuestion%2BReport%2B6&closeWindowOnLastView=true&ui_appbar=false&ui_navbar=false&shareMode=embedded&action=view&sceneId=-1&sceneTime=0&nav_filter=true"
+          height="580" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen
+          style="width:100%"></iframe>
+      </div>
+
+      <!-- Story slides UI -->
+      <div class="page-section-title"><span class="dot"></span>Scene Navigator</div>
+
+      <div id="story-scene-0" class="story-scene active">
+        <div class="card">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="font-size:2.4rem;flex-shrink:0;">🏨</div>
+            <div>
+              <div style="font-family:var(--font-m);font-size:.72rem;color:var(--aqua);letter-spacing:.12em;margin-bottom:6px;">SCENE 1 OF 6</div>
+              <div style="font-family:var(--font-h);font-size:1.6rem;font-weight:800;color:#fff;margin-bottom:12px;">Chain-Wide Revenue & Occupancy Overview</div>
+              <p style="font-size:.92rem;color:var(--muted);line-height:1.7;">High-level view of total revenue and occupancy across all 12 GrandStay properties — establishing the baseline performance for FY 2024. Total chain-wide revenue reached ₹4.2 Crores with average occupancy of 74.3%.</p>
+              <div style="margin-top:18px;display:flex;gap:20px;flex-wrap:wrap;">
+                <div style="background:rgba(0,212,200,0.1);border:1px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;">
+                  <div style="font-family:var(--font-h);font-size:1.5rem;font-weight:900;color:var(--aqua);">₹4.2 Cr</div>
+                  <div style="font-size:.72rem;color:var(--muted);font-family:var(--font-m);letter-spacing:.08em;margin-top:4px;">TOTAL REVENUE</div>
+                </div>
+                <div style="background:rgba(0,212,200,0.1);border:1px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;">
+                  <div style="font-family:var(--font-h);font-size:1.5rem;font-weight:900;color:var(--aqua);">74.3%</div>
+                  <div style="font-size:.72rem;color:var(--muted);font-family:var(--font-m);letter-spacing:.08em;margin-top:4px;">AVG OCCUPANCY</div>
+                </div>
+                <div style="background:rgba(0,212,200,0.1);border:1px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;">
+                  <div style="font-family:var(--font-h);font-size:1.5rem;font-weight:900;color:var(--aqua);">7.8/10</div>
+                  <div style="font-size:.72rem;color:var(--muted);font-family:var(--font-m);letter-spacing:.08em;margin-top:4px;">AVG RATING</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="story-scene-1" class="story-scene">
+        <div class="card">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="font-size:2.4rem;flex-shrink:0;">📊</div>
+            <div>
+              <div style="font-family:var(--font-m);font-size:.72rem;color:var(--aqua);letter-spacing:.12em;margin-bottom:6px;">SCENE 2 OF 6</div>
+              <div style="font-family:var(--font-h);font-size:1.6rem;font-weight:800;color:#fff;margin-bottom:12px;">Property-by-Property Comparison</div>
+              <p style="font-size:.92rem;color:var(--muted);line-height:1.7;">Side-by-side analysis of all 12 properties, identifying top performers and underperformers across 6 cities. Goa properties led in guest satisfaction while Mumbai led in total revenue contribution.</p>
+              <div style="margin-top:16px;">
+                <div style="font-size:.8rem;color:var(--aqua);font-family:var(--font-m);margin-bottom:10px;">TOP PERFORMERS</div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.2);border-radius:8px;padding:10px 14px;">
+                    <span style="font-size:.88rem;">GrandStay Calangute, Goa</span>
+                    <span style="color:var(--green);font-family:var(--font-m);font-size:.85rem;">₹25.9L · 8.7★</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.2);border-radius:8px;padding:10px 14px;">
+                    <span style="font-size:.88rem;">GrandStay Juhu, Mumbai</span>
+                    <span style="color:var(--green);font-family:var(--font-m);font-size:.85rem;">₹26.7L · 8.2★</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.2);border-radius:8px;padding:10px 14px;">
+                    <span style="font-size:.88rem;">GrandStay Aerocity, Delhi</span>
+                    <span style="color:var(--red);font-family:var(--font-m);font-size:.85rem;">₹16.9L · 5.4★</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="story-scene-2" class="story-scene">
+        <div class="card">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="font-size:2.4rem;flex-shrink:0;">🍴</div>
+            <div>
+              <div style="font-family:var(--font-m);font-size:.72rem;color:var(--aqua);letter-spacing:.12em;margin-bottom:6px;">SCENE 3 OF 6</div>
+              <div style="font-family:var(--font-h);font-size:1.6rem;font-weight:800;color:#fff;margin-bottom:12px;">F&B & Ancillary Revenue Breakdown</div>
+              <p style="font-size:.92rem;color:var(--muted);line-height:1.7;">Deep-dive into F&B and Spa revenue streams. F&B contributes 26% of total revenue, Spa contributes 9%. Goa properties show the highest F&B revenue per guest, indicating strong dining upsell opportunities.</p>
+              <div style="margin-top:18px;display:flex;gap:20px;flex-wrap:wrap;">
+                <div style="background:rgba(0,212,200,0.1);border:1px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;">
+                  <div style="font-family:var(--font-h);font-size:1.5rem;font-weight:900;color:var(--gold);">26%</div>
+                  <div style="font-size:.72rem;color:var(--muted);font-family:var(--font-m);letter-spacing:.08em;margin-top:4px;">F&B SHARE</div>
+                </div>
+                <div style="background:rgba(0,212,200,0.1);border:1px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;">
+                  <div style="font-family:var(--font-h);font-size:1.5rem;font-weight:900;color:var(--gold);">9%</div>
+                  <div style="font-size:.72rem;color:var(--muted);font-family:var(--font-m);letter-spacing:.08em;margin-top:4px;">SPA SHARE</div>
+                </div>
+                <div style="background:rgba(0,212,200,0.1);border:1px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;">
+                  <div style="font-family:var(--font-h);font-size:1.5rem;font-weight:900;color:var(--gold);">₹1.1 Cr</div>
+                  <div style="font-size:.72rem;color:var(--muted);font-family:var(--font-m);letter-spacing:.08em;margin-top:4px;">TOTAL F&B</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="story-scene-3" class="story-scene">
+        <div class="card">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="font-size:2.4rem;flex-shrink:0;">⭐</div>
+            <div>
+              <div style="font-family:var(--font-m);font-size:.72rem;color:var(--aqua);letter-spacing:.12em;margin-bottom:6px;">SCENE 4 OF 6</div>
+              <div style="font-family:var(--font-h);font-size:1.6rem;font-weight:800;color:#fff;margin-bottom:12px;">Guest Satisfaction Analysis</div>
+              <p style="font-size:.92rem;color:var(--muted);line-height:1.7;">Review score analysis by property, room type, and booking channel. Direct bookings yield 8.4 avg rating vs OTA bookings at 7.1. Suite guests consistently rate 1.2 points higher than standard room guests.</p>
+              <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
+                <div style="background:rgba(54,211,153,0.08);border:1px solid rgba(54,211,153,0.2);border-radius:8px;padding:12px 16px;">
+                  <div style="font-size:.78rem;color:var(--green);font-family:var(--font-m);margin-bottom:4px;">HIGH PERFORMERS (≥8.0)</div>
+                  <div style="font-size:.88rem;color:var(--text);">Goa properties, Mumbai Juhu, Bengaluru Whitefield</div>
+                </div>
+                <div style="background:rgba(255,95,109,0.08);border:1px solid rgba(255,95,109,0.2);border-radius:8px;padding:12px 16px;">
+                  <div style="font-size:.78rem;color:var(--red);font-family:var(--font-m);margin-bottom:4px;">NEEDS ATTENTION (&lt;6.0)</div>
+                  <div style="font-size:.88rem;color:var(--text);">Delhi Aerocity (5.4), Jaipur Pink City (5.8), Chennai Anna Nagar (5.6)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="story-scene-4" class="story-scene">
+        <div class="card">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="font-size:2.4rem;flex-shrink:0;">📅</div>
+            <div>
+              <div style="font-family:var(--font-m);font-size:.72rem;color:var(--aqua);letter-spacing:.12em;margin-bottom:6px;">SCENE 5 OF 6</div>
+              <div style="font-family:var(--font-h);font-size:1.6rem;font-weight:800;color:#fff;margin-bottom:12px;">Seasonal Patterns & Pricing Opportunities</div>
+              <p style="font-size:.92rem;color:var(--muted);line-height:1.7;">Seasonal occupancy shows clear peaks in October–January (winter tourism) and May–June (summer travel). Shoulder season of July–August drops to 58% occupancy, presenting dynamic pricing intervention opportunities.</p>
+              <div style="margin-top:18px;display:flex;gap:20px;flex-wrap:wrap;">
+                <div style="background:rgba(0,212,200,0.1);border:1px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;">
+                  <div style="font-family:var(--font-h);font-size:1.5rem;font-weight:900;color:var(--aqua);">Dec</div>
+                  <div style="font-size:.72rem;color:var(--muted);font-family:var(--font-m);letter-spacing:.08em;margin-top:4px;">PEAK MONTH</div>
+                </div>
+                <div style="background:rgba(0,212,200,0.1);border:1px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;">
+                  <div style="font-family:var(--font-h);font-size:1.5rem;font-weight:900;color:var(--red);">Jul</div>
+                  <div style="font-size:.72rem;color:var(--muted);font-family:var(--font-m);letter-spacing:.08em;margin-top:4px;">LOWEST MONTH</div>
+                </div>
+                <div style="background:rgba(0,212,200,0.1);border:1px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;">
+                  <div style="font-family:var(--font-h);font-size:1.5rem;font-weight:900;color:var(--gold);">58%</div>
+                  <div style="font-size:.72rem;color:var(--muted);font-family:var(--font-m);letter-spacing:.08em;margin-top:4px;">SHOULDER OCC.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="story-scene-5" class="story-scene">
+        <div class="card">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="font-size:2.4rem;flex-shrink:0;">🚀</div>
+            <div>
+              <div style="font-family:var(--font-m);font-size:.72rem;color:var(--aqua);letter-spacing:.12em;margin-bottom:6px;">SCENE 6 OF 6</div>
+              <div style="font-family:var(--font-h);font-size:1.6rem;font-weight:800;color:#fff;margin-bottom:12px;">Strategic Recommendations for Growth</div>
+              <p style="font-size:.92rem;color:var(--muted);line-height:1.7;margin-bottom:16px;">Data-driven recommendations derived from the full IBM Cognos analysis to drive revenue growth in FY 2025.</p>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div style="background:rgba(0,212,200,0.06);border-left:3px solid var(--aqua);border-radius:0 8px 8px 0;padding:12px 16px;">
+                  <div style="font-size:.82rem;font-weight:600;color:#fff;margin-bottom:4px;">1. Dynamic Pricing for Shoulder Season</div>
+                  <div style="font-size:.8rem;color:var(--muted);">Implement 15–25% discounts for July–August bookings to lift occupancy from 58% to 70%.</div>
+                </div>
+                <div style="background:rgba(0,212,200,0.06);border-left:3px solid var(--aqua);border-radius:0 8px 8px 0;padding:12px 16px;">
+                  <div style="font-size:.82rem;font-weight:600;color:#fff;margin-bottom:4px;">2. Shift Booking Channel Mix to Direct</div>
+                  <div style="font-size:.8rem;color:var(--muted);">Direct bookings yield higher ratings (8.4) and lower commission costs. Target 40% direct by FY25.</div>
+                </div>
+                <div style="background:rgba(0,212,200,0.06);border-left:3px solid var(--aqua);border-radius:0 8px 8px 0;padding:12px 16px;">
+                  <div style="font-size:.82rem;font-weight:600;color:#fff;margin-bottom:4px;">3. F&B Upsell Programme for Delhi & Jaipur</div>
+                  <div style="font-size:.8rem;color:var(--muted);">Low-performing properties have F&B/room revenue ratios 40% below Goa. Targeted upselling training needed.</div>
+                </div>
+                <div style="background:rgba(0,212,200,0.06);border-left:3px solid var(--aqua);border-radius:0 8px 8px 0;padding:12px 16px;">
+                  <div style="font-size:.82rem;font-weight:600;color:#fff;margin-bottom:4px;">4. Service Recovery at Low-Rated Properties</div>
+                  <div style="font-size:.8rem;color:var(--muted);">3 properties below 6/10 need immediate service improvement programs to protect brand equity.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Story Navigation -->
+      <div class="story-nav">
+        <button class="story-btn" id="btnPrev" onclick="storyNav(-1)" disabled>← Previous</button>
+        <div style="text-align:center;">
+          <div class="story-dots" id="storyDots">
+            <button class="story-dot active" onclick="storyGoto(0)"></button>
+            <button class="story-dot" onclick="storyGoto(1)"></button>
+            <button class="story-dot" onclick="storyGoto(2)"></button>
+            <button class="story-dot" onclick="storyGoto(3)"></button>
+            <button class="story-dot" onclick="storyGoto(4)"></button>
+            <button class="story-dot" onclick="storyGoto(5)"></button>
+          </div>
+          <div class="scene-label" id="sceneLabel" style="margin-top:8px;">Scene 1 of 6</div>
+        </div>
+        <button class="story-btn" id="btnNext" onclick="storyNav(1)">Next →</button>
+      </div>
+
+    </div>
+    <footer class="footer">
+      <div class="footer-text"><strong>GrandStay Hotels</strong> | Internal Use Only</div>
+      <div class="footer-right">Story Making Module · IBM Cognos Analytics</div>
+    </footer>
+  </div>
+
+</div><!-- end page-app -->
+
+<script>
+/* ═══════════════ PARTICLES ═══════════════ */
+(function(){
+  const c=document.getElementById('particles');
+  for(let i=0;i<28;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    p.style.left=Math.random()*100+'%';
+    p.style.animationDuration=(8+Math.random()*14)+'s';
+    p.style.animationDelay=(-Math.random()*20)+'s';
+    p.style.width=p.style.height=(1+Math.random()*2)+'px';
+    p.style.opacity=Math.random()*0.6;
+    c.appendChild(p);
+  }
+})();
+
+/* ═══════════════ AUTH ═══════════════ */
+function doLogin(){
+  const u=document.getElementById('loginUser').value.trim();
+  const p=document.getElementById('loginPass').value.trim();
+  const err=document.getElementById('loginErr');
+  if(u==='admin'&&p==='1234'){
+    err.classList.remove('show');
+    document.getElementById('page-login').style.opacity='0';
+    document.getElementById('page-login').style.transition='opacity .4s';
+    setTimeout(()=>{
+      document.getElementById('page-login').classList.remove('active');
+      document.getElementById('page-app').classList.add('active');
+      showPage('home');
+      initCharts();
+    },400);
+  } else {
+    err.classList.add('show');
+    document.getElementById('loginPass').value='';
+  }
+}
+document.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+function doLogout(){
+  document.getElementById('page-app').classList.remove('active');
+  document.getElementById('page-login').style.opacity='1';
+  document.getElementById('page-login').classList.add('active');
+  document.getElementById('loginUser').value='';
+  document.getElementById('loginPass').value='';
+}
+
+/* ═══════════════ NAV ═══════════════ */
+const pages=['home','reports','dashboard','exploration','story'];
+function showPage(name){
+  pages.forEach(p=>{
+    const el=document.getElementById('inner-'+p);
+    if(el) el.style.display= p===name?'block':'none';
+  });
+  document.querySelectorAll('.nav-link').forEach(l=>{
+    l.classList.toggle('active', l.textContent.toLowerCase().includes(name));
+  });
+  
+  // close mobile menu
+  document.getElementById('navLinks').classList.remove('open');
+  if(name==='dashboard') initCharts();
+  if(name==='reports') initTrendChart();
+}
+function toggleMenu(){
+  document.getElementById('navLinks').classList.toggle('open');
+}
+
+/* ═══════════════ TABS ═══════════════ */
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='report3') setTimeout(initTrendChart,100);
+}
+
+/* ═══════════════ CHARTS ═══════════════ */
+const AQUA='rgba(0,212,200,1)';
+const AQUA2='rgba(0,212,200,0.6)';
+const AQUA3='rgba(0,212,200,0.15)';
+const TEAL='rgba(0,124,117,0.8)';
+let chartsInited=false;
+
+function initCharts(){
+  if(chartsInited) return;
+  chartsInited=true;
+
+  // Bar — Revenue by Property
+  new Chart(document.getElementById('chartBar'),{
+    type:'bar',
+    data:{
+      labels:['Juhu','Colaba','Connaught','Aerocity','Calangute','Panaji','Pink City','Amer','Koramangala','Whitefield','ECR','Anna Nagar'],
+      datasets:[{
+        label:'Revenue (₹L)',
+        data:[26.7,24.5,20.4,16.9,25.9,21.3,17.4,14.7,24.9,22.8,18.2,15.9],
+        backgroundColor:AQUA3,
+        borderColor:AQUA,
+        borderWidth:1.5,
+        borderRadius:6,
+        hoverBackgroundColor:AQUA2,
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'₹'+c.raw+'L'}}},
+      scales:{
+        x:{ticks:{color:'#7ab8c0',font:{size:9}},grid:{color:'rgba(0,212,200,0.05)'}},
+        y:{ticks:{color:'#7ab8c0',callback:v=>'₹'+v+'L'},grid:{color:'rgba(0,212,200,0.06)'}}
+      }
+    }
+  });
+
+  // Pie — Booking Channel
+  new Chart(document.getElementById('chartPie'),{
+    type:'doughnut',
+    data:{
+      labels:['Online (OTA)','Direct','Agent'],
+      datasets:[{
+        data:[48,32,20],
+        backgroundColor:['rgba(0,212,200,0.7)','rgba(0,124,117,0.8)','rgba(245,200,66,0.7)'],
+        borderColor:'rgba(4,30,44,0.5)',
+        borderWidth:2,
+        hoverOffset:8,
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,cutout:'62%',
+      plugins:{
+        legend:{position:'bottom',labels:{color:'#7ab8c0',padding:14,font:{size:12}}},
+        tooltip:{callbacks:{label:c=>c.label+': '+c.raw+'%'}}
+      }
+    }
+  });
+
+  // Line — Monthly trend
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const rev=[32.1,29.8,34.5,31.2,38.7,36.1,24.1,25.8,33.4,41.2,44.8,48.2];
+  new Chart(document.getElementById('chartLine'),{
+    type:'line',
+    data:{
+      labels:months,
+      datasets:[{
+        label:'Revenue (₹L)',
+        data:rev,
+        borderColor:AQUA,
+        backgroundColor:'rgba(0,212,200,0.08)',
+        tension:.4,fill:true,
+        pointBackgroundColor:AQUA,pointRadius:4,pointHoverRadius:7,
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{color:'#7ab8c0'},grid:{color:'rgba(0,212,200,0.05)'}},
+        y:{ticks:{color:'#7ab8c0',callback:v=>'₹'+v+'L'},grid:{color:'rgba(0,212,200,0.06)'}}
+      }
+    }
+  });
+}
+
+function initTrendChart(){
+  if(document.getElementById('chartTrend')._chart) return;
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const rev=[32.1,29.8,34.5,31.2,38.7,36.1,24.1,25.8,33.4,41.2,44.8,48.2];
+  const chart=new Chart(document.getElementById('chartTrend'),{
+    type:'bar',
+    data:{
+      labels:months,
+      datasets:[{
+        type:'bar',label:'Revenue (₹L)',data:rev,
+        backgroundColor:rev.map(v=>v<30?'rgba(255,95,109,0.5)':'rgba(0,212,200,0.3)'),
+        borderColor:rev.map(v=>v<30?'rgba(255,95,109,0.9)':AQUA),
+        borderWidth:1.5,borderRadius:6,
+      },{
+        type:'line',label:'Trend',data:rev,
+        borderColor:AQUA,backgroundColor:'transparent',
+        tension:.45,pointRadius:3,pointBackgroundColor:AQUA,
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#7ab8c0',font:{size:11}}}},
+      scales:{
+        x:{ticks:{color:'#7ab8c0'},grid:{color:'rgba(0,212,200,0.05)'}},
+        y:{ticks:{color:'#7ab8c0',callback:v=>'₹'+v+'L'},grid:{color:'rgba(0,212,200,0.06)'}}
+      }
+    }
+  });
+  document.getElementById('chartTrend')._chart=chart;
+}
+
+/* ═══════════════ STORY NAV ═══════════════ */
+let storyIdx=0;
+const totalScenes=6;
+function storyNav(dir){storyGoto(storyIdx+dir);}
+function storyGoto(n){
+  document.querySelectorAll('.story-scene').forEach((s,i)=>s.classList.toggle('active',i===n));
+  document.querySelectorAll('.story-dot').forEach((d,i)=>d.classList.toggle('active',i===n));
+  storyIdx=n;
+  document.getElementById('btnPrev').disabled=n===0;
+  document.getElementById('btnNext').disabled=n===totalScenes-1;
+  document.getElementById('sceneLabel').textContent='Scene '+(n+1)+' of '+totalScenes;
+}
+</script>
+</body>
+</html>
